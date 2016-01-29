@@ -1,34 +1,8 @@
 
-CS 6301.002.  Implementation of advanced data structures and algorithms
-Spring 2016
-Short Project 1
-Wed, Jan 20, 2016
-
-Version 1.0: Initial description (Jan 20, 9:00 AM).
-Version 1.1: Additional information added to problem c (Jan 20, 8:15 PM).
-Version 1.2: Problem f added (Jan 21, 8:10 AM).
-
-Due: 1:00 PM, Thu, Jan 28.
-
-Submission procedure:
-Create a folder whose name starts with the name of the group (e.g.,
-G13).  Place all files you are submitting in that folder.  There is
-no need to submit binary files created by your IDE (such as class
-files).  Make sure there is a readme file that explains the contents
-of the files being submitted.  Zip the contents into a single zip or
-rar file.  Upload that file on elearning.  Submission can be revised
-before the deadline.  Only the final submission before the deadline
-will be graded.  Only one member of each group needs to submit project.
-
-Solve at least one problem from the following list.  First solution
-will be graded out of 10.  Each additional problem will be considered
-for 1 extra point.
-
-No sample data will be provided for short projects.  Create your own
-input data sets for testing.
-
-Topic: Lists, queues, stacks.
-
+#####CS 6301.002.  Implementation of advanced data structures and algorithms. Spring 2016
+#####Short Project 1 | Wed, Jan 20, 2016 | Due: 1:00 PM, Thu, Jan 28.
+#####Topic: Lists, queues, stacks.
+---
 a. Given two linked lists implementing sorted sets, write functions for
    union, intersection, and set difference of the sets.
 
