@@ -1,12 +1,7 @@
 
-####CS 6301.002.  Implementation of advanced data structures and algorithms
-####Spring 2016
-####Short Project 1
-####Wed, Jan 20, 2016
-
-####Due: 1:00 PM, Thu, Jan 28.
-
-####Topic: Lists, queues, stacks.
+#####CS 6301.002.  Implementation of advanced data structures and algorithms. Spring 2016
+#####Short Project 1 | Wed, Jan 20, 2016 | Due: 1:00 PM, Thu, Jan 28.
+#####Topic: Lists, queues, stacks.
 ---
 a. Given two linked lists implementing sorted sets, write functions for
    union, intersection, and set difference of the sets.
