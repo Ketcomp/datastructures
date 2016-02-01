@@ -35,7 +35,7 @@ http://www.utdallas.edu/~rbk/teach/2016s/java/code/Graph.java
 
 
 a. Topological ordering of a DAG.
-   Implement two algorithms for ordering the nodes of a DAG topologically.  
+   Implement two algorithms for ordering the nodes of a DAG topologically.
    Both algoritms should return null if the given graph is not a DAG.
 
    List<Vertex> toplogicalOrder1(Graph g) { 
