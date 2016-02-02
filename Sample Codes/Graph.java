@@ -9,7 +9,7 @@ import java.util.*;
 
 class Graph implements Iterable<Vertex> {
     public List<Vertex> verts; // array of vertices
-    public int numNodes; // number of vertices in the graph
+    public int numNodes; // number of verices in the graph
 
     /**
      * Constructor for Graph
