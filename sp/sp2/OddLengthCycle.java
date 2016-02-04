@@ -34,16 +34,21 @@ public class OddLengthCycle {
 				} else {
 				    if (u.distance == v.distance) {
 				    	List<Vertex> cycle= new LinkedList<Vertex>();
+				    	int index=0;
 				    	Vertex u_parent=u.parent;
 				    	Vertex v_parent=v.parent;
+				    	cycle.add(u);
+				    	cycle.add(v);
+				    	index++;
 				    	while(u_parent!=v_parent)
 				    	{
-				    		cycle.add(u_parent);
-					    	cycle.add(v_parent);
+				    		cycle.add(index,u_parent);
+					    	cycle.add(index+1,v_parent);
+					    	index++;
 				    		u_parent=u_parent.parent;
 				    		v_parent=v_parent.parent;
 				    	}
-				    	cycle.add(u_parent);
+				    	cycle.add(index,u_parent);
 				    	return cycle;
 				    }
 				}
@@ -54,11 +59,25 @@ public class OddLengthCycle {
 		return null;
 	}
 	
+	public static void print(List<Vertex> cycle)
+	{
+		if(cycle==null)
+		{
+			System.out.println("This is a bipartite graph");
+			return;
+		}
+		for(Vertex x: cycle)
+		{
+			System.out.print(x.name+"-");
+		}
+	}
+	
 	public static void main(String args[])
 	{
 		Scanner in= new Scanner(System.in);
 		Graph g = Graph.readGraph(in, false);
 		OddLengthCycle example= new OddLengthCycle();
-		example.oddLengthCycle(g);
+		LinkedList<Vertex> cycle=(LinkedList<Vertex>)example.oddLengthCycle(g);
+		print(cycle);
 	}
 }
