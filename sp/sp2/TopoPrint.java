@@ -19,10 +19,14 @@ public class TopoPrint<T>{
 		if(every.revAdj.size()==0) {
 			//Remove the incoming edges for vertices 'every' goes to
 			for(Edge removeThisEdge : every.Adj) {
+				//Visit each vertex that 'every' points to
 				Vertex candidateVertex = removeThisEdge.To;
-				for(Edge e2 : candidateVertex.revAdj) {
-					if(e2.From.equals(every)){
-						candidateVertex.revAdj.remove(index)
+				System.out.println("This edge goes to: "+candidateVertex.name);
+				for(Edge incomingEdgeToRemove : candidateVertex.revAdj) {
+					if(incomingEdgeToRemove.From.equals(every)){
+						System.out.println("Need to remove"+incomingEdgeToRemove.From);
+						incomingEdgeToRemove.From = null;
+						System.out.println("The From vertex for the Edge "+incomingEdgeToRemove.toString()+" is now :"+incomingEdgeToRemove.From);
 					}
 				}
 			}
@@ -71,9 +75,9 @@ public class TopoPrint<T>{
 		Stack<Vertex> opAlgo2 = new Stack<>();
 		opAlgo2 = toplogicalOrder2(myGraph);
 		int sizeofstack2 = opAlgo2.size();
-		System.out.println("Topo ordering by algo 2:");
+		//System.out.println("Topo ordering by algo 2:");
 		for(int i =0; i<sizeofstack2;i++) {
-			System.out.print(opAlgo2.pop().toString() +", ");
+			//System.out.print(opAlgo2.pop().toString() +", ");
 		}
 		
 		List<Vertex> opAlgo1 = new ArrayList<>();
