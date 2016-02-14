@@ -9,15 +9,6 @@ Due: 1:00 PM, Thu, Feb 4.
 
 Topic: Graphs
 
-Problems and their .java files
-------------------------------
-a. Topological ordering of a DAG. - TopoPrint.java
-b. Diameter of a tree. - TreeDiameter.java
-c. Strongly connected components of a directed graph. - StronglyConnectedComponents.java
-d. Finding an odd-length cycle in a non-bipartite graph. - OddLengthCycle.java 
-e. Is a given graph Eulerian? - TestEulerian.java
-
-
 a. Topological ordering of a DAG. - TopoPrint.java
 To Run: No special requirements
 Test input:

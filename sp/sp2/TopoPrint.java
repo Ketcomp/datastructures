@@ -5,6 +5,15 @@ import java.util.ArrayList;
 
 /**
  * @author: G10
+ * Gaurav Ketkar
+ * Madhuri Abnave
+ * Malav Shah
+ * Vijay Kumar Mungara 
+ *
+ * A program to output the topological order for a DAG by two algorithms:
+ * 1. Visit vertices with no incoming edges and remove their outgoing edges. Repeat
+ * 2. Run DFS on g and push nodes to a stack in the order in which
+ * they finish. Write code without using global variables.
  */
 
 public class TopoPrint {

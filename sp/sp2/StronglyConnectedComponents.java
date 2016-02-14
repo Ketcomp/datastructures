@@ -1,5 +1,3 @@
-package sp.sp2;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -93,7 +91,7 @@ public class StronglyConnectedComponents {
 		}
 
 		int j = DFS(sample.verts, S, reverse);
-		System.out.println("The number of strongly connected components are" + j);
+		System.out.println("The number of strongly connected components are " + j);
 
 	}
 

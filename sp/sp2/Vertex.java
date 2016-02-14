@@ -26,7 +26,21 @@ public class Vertex {
 	Adj = new ArrayList<Edge>();
 	revAdj = new ArrayList<Edge>();   /* only for directed graphs */
     }
+    public int component;	
 
+	/**
+	 * @return the component number
+	 */
+	public int getComponent() {
+		return component;
+	}
+
+	/**
+	 * @param component the component number to set to the vertex
+	 */
+	public void setComponent(int component) {
+		this.component = component;
+	}
     /**
      * Method to represent a vertex by its name
      */
