@@ -78,4 +78,9 @@ public class XYZ {
 	{
 		return null;
 	}
+	
+	private int compare(XYZ a,XYZ b)
+	{
+		return 0;
+	}
 }
