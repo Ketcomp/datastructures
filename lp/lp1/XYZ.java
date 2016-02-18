@@ -1,9 +1,7 @@
-/**
- * 
- */
-
+package lp.lp1;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /*
@@ -11,6 +9,10 @@ import java.util.List;
  */
 public class XYZ {
 	List<Integer> number = new ArrayList<>();
+
+	XYZ() {
+
+	}
 
 	XYZ(String num) {
 
@@ -35,11 +37,49 @@ public class XYZ {
 	@Override
 	public String toString() {
 		// convert this to decimal
-		return null;
+		String s = "";
+		Iterator itr = this.number.iterator();
+		while (itr.hasNext()) {
+			s = s + itr.next().toString();
+		}
+		return s;
 	}
 
-	public XYZ add(XYZ a, XYZ b) {
-		return null;
+	public static XYZ add(XYZ a, XYZ b) {
+		List<Integer> number = new ArrayList<>();
+		List<Integer> num1 = a.number;
+		List<Integer> num2 = b.number;
+		Iterator itr1 = num1.iterator();
+		Iterator itr2 = num2.iterator();
+
+		int carry = 0;
+
+		while (itr1.hasNext() && itr2.hasNext()) {
+			int sum = 0;
+			int temp = (Integer) itr1.next() + (Integer) itr2.next();
+			sum = temp + carry;
+			number.add(sum % 10);
+			carry = sum / 10;
+		}
+
+		while (itr1.hasNext()) {
+			int sum = 0;
+			int temp = (Integer) itr1.next();
+			sum = temp + carry;
+			number.add(sum % 10);
+			carry = sum / 10;
+		}
+		while (itr2.hasNext()) {
+			int sum = 0;
+			int temp = (Integer) itr2.next();
+			sum = temp + carry;
+			number.add(sum % 10);
+			carry = sum / 10;
+		}
+		XYZ add = new XYZ();
+		add.number = number;
+
+		return add;
 	}
 
 	public XYZ subtract(XYZ a, XYZ b) {
@@ -95,18 +135,19 @@ public class XYZ {
 
 	public static void main(String[] args) {
 
-		String a = "1236646494148144";
-		String b = "1246464484648478";
+		String a = "12366464";
+		String b = "1246464484664646";
 		long c = 131314641314656316L;
 		long d = 466876164664L;
 		XYZ num1 = new XYZ(a);
-		System.out.println(num1.number);
+		System.out.println(num1);
 		XYZ num2 = new XYZ(b);
-		System.out.println(num2.number);
+		System.out.println(num2);
 		XYZ num3 = new XYZ(c);
-		System.out.println(num3.number);
 		XYZ num4 = new XYZ(d);
-		System.out.println(num4.number);
+		XYZ add = add(num1, num2);
+		System.out.println(add.toString());
+		System.out.println(add.number);
 
 	}
 }
