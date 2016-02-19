@@ -12,12 +12,11 @@ public class Vertex {
     public Vertex parent; // parent of the vertex
     public int distance; // distance to the vertex from the source vertex
     public List<Edge> Adj, revAdj; // adjacency list; use LinkedList or ArrayList
-
+    public Set<Edge> unseenEdges;
     /**
      * Constructor for the vertex
      * 
-     * @param n
-     *            : int - name of the vertex
+     * @param n : int - name of the vertex
      */
     Vertex(int n) {
 	name = n;
@@ -25,6 +24,7 @@ public class Vertex {
 	parent = null;
 	Adj = new ArrayList<Edge>();
 	revAdj = new ArrayList<Edge>();   /* only for directed graphs */
+	unseenEdges = new HashSet<>();	  //for Hierholzer Algo
     }
 
     /**

@@ -10,15 +10,16 @@ import java.util.*;
 class Graph implements Iterable<Vertex> {
     public List<Vertex> verts; // array of vertices
     public int numNodes; // number of verices in the graph
-
+    public int edgeCount; // number of edges in the graph
     /**
      * Constructor for Graph
      * 
      * @param size
      *            : int - number of vertices
      */
-    Graph(int size) {
+    Graph(int size, int edgeCount) {
 	numNodes = size;
+	this.edgeCount = edgeCount;
 	verts = new ArrayList<>(size + 1);
 	verts.add(0, null);
 	// create an array of Vertex objects
@@ -41,7 +42,9 @@ class Graph implements Iterable<Vertex> {
 	Vertex v = verts.get(b);
 	Edge e = new Edge(u, v, weight);
 	u.Adj.add(e);
+	u.unseenEdges.add(e);
 	v.Adj.add(e);
+	v.unseenEdges.add(e);
     }
 
     /**
@@ -121,7 +124,7 @@ class Graph implements Iterable<Vertex> {
 	int m = in.nextInt(); // number of edges in the graph
 
 	// create a graph instance
-	Graph g = new Graph(n);
+	Graph g = new Graph(n, m);
 	for (int i = 0; i < m; i++) {
 	    int u = in.nextInt();
 	    int v = in.nextInt();
