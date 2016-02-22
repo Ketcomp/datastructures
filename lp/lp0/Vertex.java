@@ -4,7 +4,10 @@
  *
  */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Vertex {
     public int name; // name of the vertex
@@ -12,7 +15,7 @@ public class Vertex {
     public Vertex parent; // parent of the vertex
     public int distance; // distance to the vertex from the source vertex
     public List<Edge> Adj, revAdj; // adjacency list; use LinkedList or ArrayList
-    public Set<Edge> unseenEdges;
+    public Set<Edge> unseenEdges;  //for Hierholzer Algo
     /**
      * Constructor for the vertex
      * 
@@ -24,7 +27,7 @@ public class Vertex {
 	parent = null;
 	Adj = new ArrayList<Edge>();
 	revAdj = new ArrayList<Edge>();   /* only for directed graphs */
-	unseenEdges = new HashSet<>();	  //for Hierholzer Algo
+	unseenEdges = new LinkedHashSet<>();	  //for Hierholzer Algo
     }
 
     /**
