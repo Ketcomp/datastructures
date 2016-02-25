@@ -67,14 +67,17 @@ public class Fibonacci_n {
 	public static void main(String args[])
 	{	long n = 999999;
 		long start = System.currentTimeMillis();
-		long answer = linearFibonacci(n, 999953);
-		System.out.println(" "+answer);
-		System.out.println("Time: "+(System.currentTimeMillis() - start)+" ms");
+		long number = 500000000;
+		long answer = linearFibonacci(n, number);
+		System.out.println("Time taken for linear fibo: "+(System.currentTimeMillis() - start)+" ms");
+		System.out.println("Linear Fibo answer: "+answer);
+		
+		System.out.println(" ");
 		
 		start = System.currentTimeMillis();
-		answer = logFibonacci(n, 999953);
-		System.out.println(" "+answer);
-		System.out.println("Time: "+(System.currentTimeMillis() - start)+" ms");
+		answer = logFibonacci(n, number);
+		System.out.println("Time taken for log fibo: "+(System.currentTimeMillis() - start)+" ms");
+		System.out.println("Log Fibo answer: "+answer);
 		
 	}
 }
