@@ -1,8 +1,6 @@
 /**
  * 
  */
-package sp.sp3;
-
 import java.util.Random;
 
 /*
