@@ -55,14 +55,25 @@ public class SinglePivotQuickSort1 {
 	
 	public static void main(String args[])
 	{
-		int n = 100000;
+		int n = 1000;
+		boolean duplicate=false;
 		if (args.length > 0) {
 			n = Integer.parseInt(args[0]);
 		}
 		Integer[] A = new Integer[n];
 		Integer[] tmp = new Integer[n];
-		for (int i = 0; i < n; i++) {
+		if(duplicate)
+		{
+		for (int i = 0; i <(n/2); i++) {
 			A[i] = new Integer(i);
+		}
+		for (int i = (n/2); i < n; i++) {
+			A[i] = new Integer(i-(n/2));
+		}
+		}else{
+			for (int i = 0; i <n; i++) {
+				A[i] = new Integer(i);
+			}
 		}
 
 		Shuffle.shuffle(A, 0, n - 1);
