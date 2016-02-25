@@ -40,7 +40,7 @@ public class SinglePivotQuickSort1 {
 		
 	}
 	
-	private static <T extends Comparable<? super T>>  void quickSort(T[] A,int p,int r)
+	protected static <T extends Comparable<? super T>>  void quickSort(T[] A,int p,int r)
 	{
 	int q=partition(A,p,r); 
 	if(p<q-1)
