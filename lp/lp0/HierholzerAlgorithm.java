@@ -49,9 +49,8 @@ public class HierholzerAlgorithm {
 		while(!stack.isEmpty()) {
 			edgeObject = stack.peek();
 			u = edgeObject.edge.otherEnd(edgeObject.start);
-			
-			if(!u.unseenEdges.isEmpty()) {
-				e = getUnvisitedEdge(u);
+			e = getUnvisitedEdge(u);
+			if(e != null) {
 				edgeObject = new EdgeObject(e, u);
 				stack.push(edgeObject);
 				
@@ -69,18 +68,26 @@ public class HierholzerAlgorithm {
 	 * get next unvisited edge from adjacency list
 	 */
 	private static Edge getUnvisitedEdge(Vertex u) {
-		Edge e = u.unseenEdges.iterator().next();
+		/*Edge e = u.unseenEdges.iterator().next();
 		u.unseenEdges.remove(e);
 		Vertex v = e.otherEnd(u);
-		v.unseenEdges.remove(e);
-		return e;
+		v.unseenEdges.remove(e);*/
+		Edge e = null;
+		while(u.itr().hasNext()) {
+			e = u.itr().next();
+			if(!e.visited) {
+				e.visited = true;
+				return e;
+			}
+		}
+		
+		return null;
 	}
 	
 	/*
 	 * verify if the tour is valid 
 	 */
-	static boolean verifyTour(Graph g, List<Edge> tour) { 
-		
+	static boolean verifyTour(Graph g, List<Edge> tour) {
 		//check edge count
 		if(tour == null || tour.size() != g.edgeCount) {
 			return false;
@@ -201,8 +208,8 @@ public class HierholzerAlgorithm {
 		Scanner in = null;
 		boolean directed = false;
 		
-		if(args.length == 1){
-			File input = new File(args[0]);
+		if(args.length == 0){
+			File input = new File("lp0-big.txt");
 			in = new Scanner(input);
 		} else {
 			in = new Scanner(System.in);
@@ -224,7 +231,8 @@ public class HierholzerAlgorithm {
 			System.out.println("not a valid tour");
 			
 		} else {
-			for(Edge e: tour) { System.out.println(e); }
+			System.out.println("printing graph");
+			//for(Edge e: tour) { System.out.println(e); }
 		}
 	}
 }
