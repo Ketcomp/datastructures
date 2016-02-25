@@ -1,4 +1,4 @@
-package sp.sp3;
+
 /** Timer class for roughly calculating running time of programs
  *  @author rbk
  *  Usage:  Timer timer = new Timer();
