@@ -1,3 +1,5 @@
+
+
 /**
  * 
  */
@@ -100,8 +102,19 @@ public class DualPivotQuickSort {
 		}
 		Integer[] A = new Integer[n];
 		Integer[] tmp = new Integer[n];
-		for (int i = 0; i < n; i++) {
+		boolean duplicate=false;
+		if(duplicate)
+		{
+		for (int i = 0; i <(n/2); i++) {
 			A[i] = new Integer(i);
+		}
+		for (int i = (n/2); i < n; i++) {
+			A[i] = new Integer(i-(n/2));
+		}
+		}else{
+			for (int i = 0; i <n; i++) {
+				A[i] = new Integer(i);
+			}
 		}
 
 		Shuffle.shuffle(A, 0, n - 1);
