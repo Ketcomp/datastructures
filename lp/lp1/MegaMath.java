@@ -8,12 +8,15 @@ import java.util.List;
  @author Madhuri
  */
 public class MegaMath {
-	List<Integer> number = new ArrayList<>();
-
-	MegaMath() {
-
+	
+	final int base=10;
+	List<Integer> number = new ArrayList<Integer>();
+	
+	MegaMath()
+	{
+		
 	}
-
+	
 	MegaMath(String num) {
 
 		for (int i = num.length() - 1; i >= 0; i--) {
@@ -23,14 +26,9 @@ public class MegaMath {
 
 	}
 
-	MegaMath(long num) {
+	MegaMath(Long num) {
 
-		int remainder = 0;
-		while (num > 0) {
-			remainder = (int) (num % 10);
-			num = num / 10;
-			number.add(new Integer(remainder));
-		}
+		this(num.toString());
 
 	}
 
@@ -85,7 +83,7 @@ public class MegaMath {
 	public MegaMath subtract(MegaMath a, MegaMath b) {
 
 		// if a < b
-		return new MegaMath(0);
+		return new MegaMath();
 	}
 
 	public MegaMath product(MegaMath a, MegaMath b) {
@@ -97,11 +95,19 @@ public class MegaMath {
 	}
 
 	public void printList() {
-		// print base : + list elements in lsd to msd order
+		
+		Iterator iter= this.number.iterator();
+		Integer digit;
+		System.out.print(base+" : ");
+		while(iter.hasNext())
+		{
+			digit= (Integer)iter.next();
+			System.out.print(digit+" ");
+		}
 	}
 
 	// level 2 started
-	// a and n are both XYZ. Here a may be negative, but assume that n is
+	// a and n are both MegaMath. Here a may be negative, but assume that n is
 	// non-negative.
 	public MegaMath power(MegaMath a, MegaMath n) {
 		return null;
@@ -136,7 +142,7 @@ public class MegaMath {
 	public static void main(String[] args) {
 
 		String a = "12366464";
-		String b = "1246464484664646";
+		/*String b = "1246464484664646";
 		long c = 131314641314656316L;
 		long d = 466876164664L;
 		MegaMath num1 = new MegaMath(a);
@@ -147,7 +153,9 @@ public class MegaMath {
 		MegaMath num4 = new MegaMath(d);
 		MegaMath add = add(num1, num2);
 		System.out.println(add.toString());
-		System.out.println(add.number);
-
+		System.out.println(add.number);*/
+		MegaMath x= new MegaMath(a);
+		x.printList();
+		
 	}
 }
