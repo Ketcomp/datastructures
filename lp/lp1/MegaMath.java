@@ -13,7 +13,6 @@ public class MegaMath {
 
 	// What does this constructor do?
 	MegaMath() {
-
 	}
 
 	// Constructor for MegaMath class; takes a string s as parameter, that
@@ -124,8 +123,88 @@ public class MegaMath {
 	}
 
 	// Product of two numbers.
-	public MegaMath product(MegaMath a, MegaMath b) {
-		return null;
+	
+	public static void padding(MegaMath a, MegaMath b)
+	{
+		int count=0;
+		if(a.number.size()<b.number.size())
+		{
+			count=b.number.size()-a.number.size();
+			while(count>0)
+			{
+				a.number.add(0);
+				count--;
+			}
+		}
+		else
+		{
+			count=a.number.size()-b.number.size();
+			while(count>0)
+			{
+				b.number.add(0);
+				count--;
+			}
+		}
+	}
+	
+	public static MegaMath product(MegaMath a, MegaMath b) 
+	{	
+		if(a.number.size()!=b.number.size())
+		{
+			padding(a,b);
+		}
+		MegaMath answer=new MegaMath();
+		int n= a.number.size();
+		if(n==1)
+		{
+			int product= (a.number.get(0)*b.number.get(0));
+			while(product>0)
+			{
+				answer.number.add((product%base));
+				product=product/base;
+			}
+			return answer;
+		}
+		MegaMath a_first= new MegaMath();
+		MegaMath b_first= new MegaMath();
+		MegaMath a_second= new MegaMath();
+		MegaMath b_second= new MegaMath();
+		int i=0;
+		while(i<(n/2))
+		{
+			a_second.number.add(a.number.get(i));
+			b_second.number.add(b.number.get(i));
+			i++;
+		}
+		i=n/2;
+		while(i<n)
+		{
+			a_first.number.add(a.number.get(i));
+			b_first.number.add(b.number.get(i));
+			i++;
+		}
+		MegaMath answer1= product(a_first, b_first);
+		MegaMath answer2= product(a_second, b_second);
+		MegaMath sum1= add(a_first, a_second);
+		MegaMath sum2= add(b_first, b_second);
+		MegaMath prod1= product(sum1,sum2);
+		MegaMath sub1= subtract(prod1, answer1);
+		MegaMath sub2= subtract(sub1,answer2);
+		i=0;
+		while(i<n)
+		{
+			answer1.number.add(0,0);
+			i++;
+		}
+		i=0;
+		while(i<(n/2))
+		{
+			sub2.number.add(0,0);
+			i++;
+		}
+		MegaMath finalsum1= add(answer1, sub2);
+		MegaMath finalsum2= add(finalsum1, answer2);
+		return finalsum2;
 	}
 
 	// Number 'a' raised to power 'n'
@@ -201,13 +280,17 @@ public class MegaMath {
 		if (args.length > 0) {
 			base = Integer.parseInt(args[0]);
 		}
-		String a = "12366464";
-		String b = "68864";
+		String a = "2";
+		String b = "2";
 		long c = 131314641314656316L;
 
 		MegaMath x = new MegaMath(a);
 		MegaMath y = new MegaMath(b);
 		MegaMath z = new MegaMath(c);
+		MegaMath p=product(x,y);
+		System.out.println(x.toString());
+		System.out.println(y.toString());
+		System.out.println(p.toString());
 
 //		// Test Addition
 //		MegaMath addition = add(x,y);
@@ -216,8 +299,8 @@ public class MegaMath {
 		//Test Subtraction
 //		MegaMath subtraction = subtract(y, x);
 //		System.out.println(subtraction.toString());
-		MegaMath subtraction2 = subtract(x,y);
-		System.out.println(subtraction2.toString());
+//		MegaMath subtraction2 = subtract(x,y);
+//		System.out.println(subtraction2.toString());
 
 //		// Test printList.
 //		x.printList();
