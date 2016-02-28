@@ -161,39 +161,69 @@ public class MegaMath {
 		return null;
 	}
 
-	// remainder you get when a is divided by b (a%b). Assume that a is
+	// Remainder you get when a is divided by b (a%b). Assume that a is
 	// non-negative, and b > 0.
 	public MegaMath mod(MegaMath a, MegaMath b) {
 		return null;
 	}
 
-	// return the square root of a (truncated). Use binary search. Assume that a
+	// Return the square root of a (truncated). Use binary search. Assume that a
 	// is non-negative
 	public MegaMath squareRoot(MegaMath a) {
 		return null;
 	}
 
-	private int compare(MegaMath a, MegaMath b) {
-		return 0;
+	// Compares two MegaMath numbers and returns 1,0 or -1 appropriately.
+	private static int compare(MegaMath a, MegaMath b) {
+		int index = a.number.size();
+		int loop = index; // Loop over 'index' number of times to cover 'a' fully
+		int i = 1;
+		// return -1 if a is smaller
+		if(a.number.size() < b.number.size())
+			return -1;
+		// return 1 if a is larger
+		else if(a.number.size() > b.number.size())
+			return 1;
+		else 
+		// This means a and b are the same size. So check digit by digit from MSD.
+			while(loop > 0){
+				int condition = a.number.get(index - i) 
+								- b.number.get(index -i);
+				i++;
+				loop--;
+				if(condition == 0) continue;// In-decisive, need to check next digit
+				return condition;
+			}
+		return 0; // All digits were same, they are equal!
 	}
 
 	public static void main(String[] args) {
-
+		if (args.length > 0) {
+			base = Integer.parseInt(args[0]);
+		}
 		String a = "12366464";
-		/*String b = "1246464484664646";
+		String b = "68864";
 		long c = 131314641314656316L;
-		long d = 466876164664L;
-		MegaMath num1 = new MegaMath(a);
-		System.out.println(num1);
-		MegaMath num2 = new MegaMath(b);
-		System.out.println(num2);
-		MegaMath num3 = new MegaMath(c);
-		MegaMath num4 = new MegaMath(d);
-		MegaMath add = add(num1, num2);
-		System.out.println(add.toString());
-		System.out.println(add.number);*/
-		MegaMath x= new MegaMath(a);
-		x.printList();
-		
+
+		MegaMath x = new MegaMath(a);
+		MegaMath y = new MegaMath(b);
+		MegaMath z = new MegaMath(c);
+
+//		// Test Addition
+//		MegaMath addition = add(x,y);
+//		System.out.println(addition.toString());
+
+		//Test Subtraction
+//		MegaMath subtraction = subtract(y, x);
+//		System.out.println(subtraction.toString());
+		MegaMath subtraction2 = subtract(x,y);
+		System.out.println(subtraction2.toString());
+
+//		// Test printList.
+//		x.printList();
+
+//		// Test compare
+//		System.out.println("Comparison result is " + compare(y, x));
+
 	}
 }
