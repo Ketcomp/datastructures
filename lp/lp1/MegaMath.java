@@ -7,8 +7,8 @@ import java.util.List;
  */
 
 public class MegaMath {
-	// assume default base is 10
-	static int base = 10;
+	// Default base is 10
+	final int base = 10;
 	List<Integer> number = new ArrayList<Integer>();
 
 	// What does this constructor do?
@@ -40,6 +40,7 @@ public class MegaMath {
 		while (itr.hasNext()) {
 			s = s + itr.next().toString();
 		}
+		// Remove leading zeros
 		// return the number in human readable order
 		return new StringBuilder(s).reverse().toString();
 	}
@@ -217,6 +218,7 @@ public class MegaMath {
 		Iterator<Integer> iter = this.number.iterator();
 		System.out.print(base + " : ");
 		while (iter.hasNext()) {
+			// Remove leading zeros from here.
 			// Number is printed in reverse - LSD first.
 			System.out.print((Integer) iter.next() + " ");
 		}
@@ -277,11 +279,9 @@ public class MegaMath {
 	}
 
 	public static void main(String[] args) {
-		if (args.length > 0) {
-			base = Integer.parseInt(args[0]);
-		}
+		
 		String a = "2";
-		String b = "2";
+		String b = "7";
 		long c = 131314641314656316L;
 
 		MegaMath x = new MegaMath(a);
