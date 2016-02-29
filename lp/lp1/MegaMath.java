@@ -220,6 +220,7 @@ public class MegaMath {
 
 	// Print the base + ":" + elements of the list, separated by spaces.
 	public void printList() {
+		
 		Iterator<Integer> iter = this.number.iterator();
 		System.out.print(base + " : ");
 		while (iter.hasNext()) {
@@ -273,7 +274,10 @@ public class MegaMath {
 			carry = divident % 2;
 
 		}
-
+		/*if(carry!=0)
+		{
+			number.add(0);
+		}*/
 		MegaMath divideByTwo = new MegaMath();
 		divideByTwo.number = number;
 		return divideByTwo;
@@ -320,27 +324,23 @@ public class MegaMath {
 		MegaMath x = new MegaMath(a);
 		MegaMath y = new MegaMath(b);
 		MegaMath z = new MegaMath(c);
-		MegaMath p=product(x,y);
-		System.out.println(x.toString());
-		System.out.println(y.toString());
-		System.out.println(p.toString());
 
-//		// Test Addition
-//		MegaMath addition = add(x,y);
+		// // Test Addition
+//		MegaMath addition = add(x, y);
 //		System.out.println(addition.toString());
 //		addition.printList();
 
-		//Test Subtraction
-//		MegaMath subtraction = subtract(y, x);
-//		System.out.println(subtraction.toString());
-//		MegaMath subtraction2 = subtract(x,y);
-//		System.out.println(subtraction2.toString());
+//		 // Test Subtraction
+//		 MegaMath subtraction = subtract(x, y);
+//		 System.out.println(subtraction.toString() + "\nNumber is negative? "+ subtraction.isNegative);
+		// MegaMath subtraction2 = subtract(x,y);
+		// System.out.println(subtraction2.toString());
 
-//		// Test printList.
-//		x.printList();
+		// // Test printList.
+		// x.printList();
 
-//		// Test compare
-//		System.out.println("Comparison result is " + compare(y, x));
+		// // Test compare
+		// System.out.println("Comparison result is " + compare(y, x));
 
 		// Test product
 		// MegaMath p = product(x, y);
