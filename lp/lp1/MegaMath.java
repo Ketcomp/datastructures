@@ -75,6 +75,8 @@ public class MegaMath {
 			number.add(sum % base);
 			carry = sum / base;
 		}
+		if(carry!=0)
+			number.add(carry);
 		MegaMath additionResult = new MegaMath();
 		additionResult.number = number;
 		return additionResult;
@@ -158,6 +160,11 @@ public class MegaMath {
 		if(n==1)
 		{
 			int product= (a.number.get(0)*b.number.get(0));
+			if(product==0)
+			{
+				answer.number.add(0);
+				return answer;
+			}
 			while(product>0)
 			{
 				answer.number.add((product%base));
@@ -170,13 +177,13 @@ public class MegaMath {
 		MegaMath a_second= new MegaMath();
 		MegaMath b_second= new MegaMath();
 		int i=0;
-		while(i<(n/2))
+		while(i<(int)Math.ceil((double)n/2))
 		{
 			a_second.number.add(a.number.get(i));
 			b_second.number.add(b.number.get(i));
 			i++;
 		}
-		i=n/2;
+		i=(int)Math.ceil((double)n/2);
 		while(i<n)
 		{
 			a_first.number.add(a.number.get(i));
@@ -185,11 +192,16 @@ public class MegaMath {
 		}
 		MegaMath answer1= product(a_first, b_first);
 		MegaMath answer2= product(a_second, b_second);
+		//System.out.println(b_second.toString());
 		MegaMath sum1= add(a_first, a_second);
 		MegaMath sum2= add(b_first, b_second);
+		//System.out.println(a_first.toString());
+		//System.out.println("b:"+b.toString());
 		MegaMath prod1= product(sum1,sum2);
+		//System.out.println(sum2.toString());
 		MegaMath sub1= subtract(prod1, answer1);
 		MegaMath sub2= subtract(sub1,answer2);
+		//System.out.println(sub2.toString());
 		i=0;
 		while(i<n)
 		{
@@ -197,11 +209,12 @@ public class MegaMath {
 			i++;
 		}
 		i=0;
-		while(i<(n/2))
+		while(i<(int)Math.ceil((double)n/2))
 		{
 			sub2.number.add(0,0);
 			i++;
 		}
+		//System.out.println(sub2.toString());
 		MegaMath finalsum1= add(answer1, sub2);
 		MegaMath finalsum2= add(finalsum1, answer2);
 		return finalsum2;
@@ -226,7 +239,9 @@ public class MegaMath {
 	// 'a' and 'n' are both MegaMath. Here 'a' may be negative, but assume that
 	// 'n' is
 	// non-negative.
-	public MegaMath power(MegaMath a, MegaMath n) {
+	public MegaMath power(MegaMath a, MegaMath n) 
+	{
+		
 		return null;
 	}
 
@@ -280,8 +295,8 @@ public class MegaMath {
 		if (args.length > 0) {
 			base = Integer.parseInt(args[0]);
 		}
-		String a = "2";
-		String b = "2";
+		String a = "200";
+		String b = "10";
 		long c = 131314641314656316L;
 
 		MegaMath x = new MegaMath(a);
