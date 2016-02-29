@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +16,6 @@ public class MegaMath {
 
 	// What does this constructor do?
 	MegaMath() {
-		
 	}
 
 	// Constructor for MegaMath class; takes a string s as parameter, that
@@ -23,7 +23,6 @@ public class MegaMath {
 	// and creates the MegaMath object representing that number.
 	// The string can have arbitrary length.
 	MegaMath(String num) {
-		
 		for (int i = num.length() - 1; i >= 0; i--) {
 			number.add(Integer.parseInt(String.valueOf(num.charAt(i))));
 		}
@@ -41,7 +40,6 @@ public class MegaMath {
 		// convert 'this' to decimal
 		String s = "";
 		Iterator<Integer> itr = this.number.iterator();
-
 		while (itr.hasNext()) {
 			Integer value = itr.next();
 			s = s + value.toString();
@@ -85,6 +83,9 @@ public class MegaMath {
 			sum = temp + carry;
 			number.add(sum % base);
 			carry = sum / base;
+		}
+		if (carry != 0) {
+			number.add(carry);
 		}
 		MegaMath additionResult = new MegaMath();
 		additionResult.number = number;
@@ -167,6 +168,7 @@ public class MegaMath {
 		if (a.number.size() != b.number.size()) {
 			padding(a, b);
 		}
+	
 		if (n == 1) {
 			int product = (a.number.get(0) * b.number.get(0));
 			while (product > 0) {
@@ -220,17 +222,12 @@ public class MegaMath {
 
 	// Print the base + ":" + elements of the list, separated by spaces.
 	public void printList() {
+		
+		Iterator<Integer> iter = this.number.iterator();
 		System.out.print(base + " : ");
-		StringBuilder str = new StringBuilder();
-		for(int t: this.number) {
-			str.append(String.valueOf(t));
-		}
-		String s = str.toString();
-		int size = s.length();
-		while (size > 0) {
-			// Remove leading zeros from here.
+		while (iter.hasNext()) {
 			// Number is printed in reverse - LSD first.
-			System.out.print(s.charAt(--size) + " ");
+			System.out.print((Integer) iter.next() + " ");
 		}
 	}
 
@@ -270,7 +267,7 @@ public class MegaMath {
 				divident = stck.pop();
 			}
 
-			while (divident < 2 && !stck.isEmpty()) {
+			while (divident < 2&& !stck.isEmpty()) {
 
 				divident = (divident * 10) + stck.pop();
 			}
@@ -279,7 +276,10 @@ public class MegaMath {
 			carry = divident % 2;
 
 		}
-
+		/*if(carry!=0)
+		{
+			number.add(0);
+		}*/
 		MegaMath divideByTwo = new MegaMath();
 		divideByTwo.number = number;
 		return divideByTwo;
@@ -318,7 +318,7 @@ public class MegaMath {
 	}
 
 	public static void main(String[] args) {
-
+	
 		String a = "20";
 		String b = "000";
 		long c = 131314641314656316L;
