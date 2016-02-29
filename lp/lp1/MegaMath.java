@@ -318,26 +318,26 @@ public class MegaMath {
 	public static void main(String[] args) {
 
 		String a = "20";
-		String b = "000";
+		String b = "010";
 		long c = 131314641314656316L;
 
 		MegaMath x = new MegaMath(a);
 		MegaMath y = new MegaMath(b);
 		MegaMath z = new MegaMath(c);
 
-		// // Test Addition
+//		 // Test Addition
 //		MegaMath addition = add(x, y);
 //		System.out.println(addition.toString());
 //		addition.printList();
 
 //		 // Test Subtraction
+//		 MegaMath subtraction2 = subtract(y, x);
+//		 System.out.println(subtraction2.toString() + "\nNumber is negative? "+ subtraction2.isNegative);
 //		 MegaMath subtraction = subtract(x, y);
-//		 System.out.println(subtraction.toString() + "\nNumber is negative? "+ subtraction.isNegative);
-		// MegaMath subtraction2 = subtract(x,y);
-		// System.out.println(subtraction2.toString());
-
-		// // Test printList.
-		// x.printList();
+//		 System.out.println(subtraction.toString());
+//
+//		 // Test printList.
+//		 x.printList();
 
 		// // Test compare
 		// System.out.println("Comparison result is " + compare(y, x));
@@ -350,7 +350,7 @@ public class MegaMath {
 		
 //		// Test Divide
 //		MegaMath div = divideByTwo(x);
-////		div.printList();
-//		System.out.println(div.toString());
+//		div.printList();
+////		System.out.println(div.toString());
 	}
 }
