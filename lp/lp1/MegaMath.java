@@ -252,7 +252,46 @@ public class MegaMath {
 	}
 
 	private MegaMath divideByTwo(MegaMath a) {
-		return null;
+		
+
+		List<Integer> number = new ArrayList<>();
+		List<Integer> num1 = a.number;
+
+		Iterator<Integer> itr1 = num1.iterator();
+		Stack<Integer> stck = new Stack<Integer>();
+
+		int quotient = 0;
+		int divident = 0;
+		int carry = 0;
+		// Iterate through numbers and push it in stack.
+		while (itr1.hasNext()) {
+			stck.push(itr1.next());
+		}
+		while (!stck.isEmpty()) {
+			if (carry != 0) {
+				divident = carry * 10 + stck.pop();
+			} else {
+				divident = stck.pop();
+			}
+
+			while (divident < 2&& !stck.isEmpty()) {
+
+				divident = (divident * 10) + stck.pop();
+			}
+			quotient = divident / 2;
+			number.add(quotient);
+			carry = divident % 2;
+
+		}
+	
+		MegaMath divideByTwo = new MegaMath();
+		divideByTwo.number = number;
+		return divideByTwo;
+
+	
+		
+		
+		
 	}
 
 	// Remainder you get when a is divided by b (a%b). Assume that a is
