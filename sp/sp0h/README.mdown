@@ -38,3 +38,4 @@ Input(optional.): arraysize
 
         The most frequent number by Arrays.sort is 24
         Time: 9.274s.
+Add Slack! to the iadsa team
