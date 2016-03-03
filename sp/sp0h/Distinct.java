@@ -1,15 +1,20 @@
-
-/*
- * @author: gketkar08
- * 
- * Given an array of unsorted objects of some class (that implements hashCode and equals), 
- * move the distinct elements of the array to the front.
- * Find the k distinct elements of arr[], and move them to arr[0..k-1]. Return k. Use hashing to implement the algorithm in expected O(n) time. 
- * Signature: public static int findDistinct(T[] arr)
- */
-
 import java.util.Arrays;
 import java.util.HashSet;
+
+/*
+* @author: gketkar08
+* Team: G10
+* Gaurav Ketkar
+* Madhuri Abnave
+* Vijay Mungara
+* Malav Shah
+*/
+
+/*
+ * Given an array of unsorted objects of class Distinct, 
+ * move the distinct elements of the array to the front. 
+ *
+ */
 
 public class Distinct {
 	static Integer[] arr;
