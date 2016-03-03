@@ -1,3 +1,4 @@
+
 /*
  * @author: gketkar08
  * 
@@ -9,22 +10,50 @@
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 
-public class Distinct {	
+public class Distinct {
 	static Integer[] arr;
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(arr);
-		return result;
-	}
 
-	/* (non-Javadoc)
+	/*
+	 * Finds the distinct elements in the array arr and puts them at the front
+	 * of the array.
+	 */
+	public static <T> int findDistinct(T[] arr) {
+		HashSet<T> ourHashTable = new HashSet<>();
+
+		// Add elements of input array to our hash set
+		for (int i = 0; i < arr.length; i++) {
+			ourHashTable.add(arr[i]);
+		}
+
+		// Iterate over the HashSet and put all the unique elements at the beginning.
+		int i = 0;
+		for (T s : ourHashTable) {
+			arr[i++] = s;
+		}
+		
+		int distinctCount = ourHashTable.size();
+		return distinctCount;
+	}// findDistinct ends
+
+	public static void main(String[] args) {
+		int n = Integer.parseInt(args[0]);
+		arr = new Integer[n];
+		int i = 0;
+		while (n > 0) {
+			arr[i] = Integer.parseInt(args[i++ + 1]);
+			n--;
+		}
+		int result = findDistinct(arr);
+		for (int j = 0; j < result; j++) {
+			System.out.println(arr[j]);
+		}
+		System.out.println("There are " +result+ " distinct elements in the array.");
+	}// Main ends
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -35,47 +64,21 @@ public class Distinct {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Distinct other = (Distinct) obj;
-		if (!Arrays.equals(arr, other.arr))
+		if (!Arrays.equals(arr, Distinct.arr))
 			return false;
 		return true;
 	}
-	/*
-	 * Finds the distinct elements in the array arr and puts them at the front of the array.
-	 */
-	public static <T> int findDistinct(T[] arr) {
-		HashSet<T> ourHashTable = new HashSet<>();
-		
-		// Add elements of input array to our hash set
-		for(int i=0; i<arr.length; i++) {
-			ourHashTable.add(arr[i]);
-		}
-		
-		// Get an iterator over the HashSet.
-		int i = 0;
-		for(T s : ourHashTable)
-		{
-			arr[i++] = s;
-			System.out.println("");
-		}
-//		
-		int distinctCount = ourHashTable.size();
-		return distinctCount;
-	}// mostFrequent ends
 
-	public static void main(String[] args) {
-		int n = Integer.parseInt(args[0]);
-		arr = new Integer[n];
-		int i = 0;
-		while(n>0){
-			arr[i] = Integer.parseInt(args[i+1]);
-			n--;
-			i++;
-		}
-		int resu = findDistinct(arr);
-		for(int j=0; j<resu; j++){
-			System.out.println(arr[j]);
-		}
-		System.out.println("There are " + resu + " distinct elements in the array.");
-	}// Main ends
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(arr);
+		return result;
+	}
 }// Class ends
