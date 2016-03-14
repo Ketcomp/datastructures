@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * 
@@ -34,6 +35,27 @@ Reduction in weight of MST by above transformation = Pdu, where u ∈ V − r.
 			if(minEdge == null || minEdge.deleted) continue;
 			Vertex u = getParent(minEdge.From);
 			int du = minEdge.reducedWeight;
+			if(u != v) {
+				v.previous = u;
+				u.outgoing0s.add(v);
+				if(du == 0) continue;
+				//reduce weights of all incoming edges
+				for(Edge e: v.revAdj) {
+					e.reducedWeight -= du;
+				}
+				Pdu += du;
+			}
+		}
+		return Pdu;
+	}
+	
+	private static long create0WeightGraph2(Graph g) {
+		long Pdu = 0;
+		for(int i = 2; i < verticies.size(); i++) {
+			Vertex v = verticies.get(i);
+			Edge minEdge = getEdge(v);
+			Vertex u = minEdge.From;
+			int du = minEdge.reducedWeight;
 			if(du == 0) continue;
 			if(u != v) {
 				v.previous = u;
@@ -47,6 +69,7 @@ Reduction in weight of MST by above transformation = Pdu, where u ∈ V − r.
 		return Pdu;
 	}
 	
+	
 	static Edge getEdge(Vertex v) {
 		Edge minEdge = v.incomingEdgesPQ.peek();
 		return minEdge;
@@ -55,7 +78,7 @@ Reduction in weight of MST by above transformation = Pdu, where u ∈ V − r.
 	/*2. Let G0 = (V, Z) be the subgraph of G containing all edges of 0-weight, i.e., Z = {e ∈ E :
 		w(e) = 0}. Run DFS/BFS in G0, from r. Note that we are using only edges of G with
 		0-weight. If all nodes of V are reached from r, then return this DFS/BFS tree as MST.*/
-	private static Vertex runBFS(Graph g0){
+	private static Vertex runBFS(Graph g0, boolean print){
 		//return null if BFS can traverse through all nodes in g0, else unreachable node
 		
 		//reset graph vertex nodes
@@ -68,25 +91,20 @@ Reduction in weight of MST by above transformation = Pdu, where u ∈ V − r.
 		int bfsCount = 0;
 		Queue<Vertex> queue = new LinkedList<>();
 		Vertex u = verticies.get(1); u.seen = true; // start from root node always
-		Vertex v = null;
 		queue.offer(u);
 		
 		while(!queue.isEmpty()) {
 			u = getParent(queue.poll());
 			bfsCount += u.children;
 			
-			for(Edge e: u.Adj) {
-				v = getParent(e.To);
-				if(u.equals(v)) continue;
-				
-				// check if edge is already deleted when removing 0 cycle. run only on 0 weight edges
-				if(!e.isDeleted() && e.reducedWeight == 0) {
-					if(!v.seen) {
-						queue.offer(v);
-						v.seen = true;
-					}
+			for(Vertex v: u.outgoing0s) {
+				if(!v.seen) {
+					queue.offer(v);
+					if(print) System.out.println("(" + u + "," + v +")");
+					v.seen = true;
 				}
 			}
+			
 		}
 		
 		// get unvisited node
@@ -102,6 +120,40 @@ Reduction in weight of MST by above transformation = Pdu, where u ∈ V − r.
 		}
 
 		return null;
+	}
+	
+	private static void printMDST(Graph g0){
+		//return null if BFS can traverse through all nodes in g0, else unreachable node
+		
+		//reset graph vertex nodes
+		for(Vertex v : verticies) {
+			if(v != null) {
+				v.seen = false;
+			}
+		}
+		
+		int bfsCount = 0;
+		Queue<Vertex> queue = new LinkedList<>();
+		Vertex u = verticies.get(1); u.seen = true; // start from root node always
+		queue.offer(u);
+		Vertex v = null;
+		while(!queue.isEmpty()) {
+			u = queue.poll();
+			bfsCount += u.children;
+			
+			for(Edge e: u.Adj) {
+				v = e.To;
+				// check if edge is already deleted when removing 0 cycle. run only on 0 weight edges
+				if(e.reducedWeight == 0) {
+					if(!v.seen) {
+						queue.offer(v);
+						System.out.println(e);
+						v.seen = true;
+					}
+				}
+			}
+			
+		}
 	}
 	
 	/*3. If there is no spanning tree rooted at r in G0, then there is a 0-weight cycle. Find a 0-weight
@@ -128,11 +180,17 @@ have equal weight.
 		Vertex pnode = getParent(z);
 		//walk backward and get all nodes and add to list 
 		Set<Vertex> nodeList = new HashSet<Vertex>();
+		Stack<Vertex> stack = new Stack<>();
 		while(!pnode.seen) {
-			nodeList.add(pnode);
+			stack.push(pnode);
 			pnode.seen = true;
 			pnode = getParent(pnode.previous);
 		}
+		
+		while(pnode != stack.peek()) {
+			nodeList.add(stack.pop());
+		}
+		nodeList.add(stack.pop());
 		
 		if(!nodeList.isEmpty()) {
 			HashMap<Vertex, Edge> revAdjMap = populaterevAdjMap(nodeList);
@@ -151,9 +209,8 @@ have equal weight.
 			}
 			
 			//for all incoming edges mark other incoming edge from cycle as deleted
-			for(Edge e: cycleNode.revAdj) {
-				Vertex other = e.otherEnd(cycleNode);
-				Edge otherEdge = other.incomingEdgesPQ.poll();
+			for(Vertex node: nodeList) {
+				Edge otherEdge = node.incomingEdgesPQ.peek();
 				otherEdge.deleted = true;
 			}
 		}
@@ -211,8 +268,9 @@ have equal weight.
 		return v;
 	}
 	
-	public static long findMST(Graph g){
+	public static void findMST(Graph g){
 		vertexCount = g.verts.size();
+		boolean printMDST = g.verts.size() <= 51 ? true: false;
 		verticies = g.verts;
 		long spanningWeight = 0;
 		
@@ -222,11 +280,15 @@ have equal weight.
 		spanningWeight = create0WeightGraph(g);
 		
 		//run BFS and if BFS is true, then return valMDST or else find and shrink 0 weight graph
-		for(Vertex v = runBFS(g); v != null; v = runBFS(g)){
+		for(Vertex v = runBFS(g, false); v != null; v = runBFS(g, false)){
 			spanningWeight += findAndShrink0WeightGraph(g, v);
 		}
 		
-		return spanningWeight;
+		//print edges
+		System.out.println(spanningWeight);
+		if(printMDST) {
+			printMDST(g);
+		}
 	}
 	
 	/*
@@ -243,7 +305,7 @@ have equal weight.
 		Scanner in = null;
 		boolean directed = true;
 		
-		if(args.length == 1){
+		if(args.length == 0){
 			File input = new File("1-lp2.txt");
 			in = new Scanner(input);
 		} else {
@@ -256,8 +318,7 @@ have equal weight.
 		System.out.println("reading graph complete");
 		//System.out.println("vertices: " + graph.numNodes + ", edges: " + graph.edgeCount);
 		long start = System.currentTimeMillis();
-		long mdstWeight = findMST(graph);
-		System.out.println(mdstWeight);
+		findMST(graph);
 		System.out.println("time = "+ (System.currentTimeMillis() - start) + " ms");
 	}
 	

@@ -16,6 +16,7 @@ public class Vertex {
     public Vertex previous;
 	public int children = 1;
 	public String childrens = "";
+	public List<Vertex> outgoing0s = new ArrayList<Vertex>();
     /**
      * Constructor for the vertex
      * 

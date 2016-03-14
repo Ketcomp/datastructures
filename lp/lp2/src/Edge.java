@@ -49,7 +49,7 @@ public class Edge implements Comparable<Edge>{
      * the arc and y is the tail of the arc
      */
     public String toString() {
-	return "(" + From + "," + To + ") : "+reducedWeight;
+	return "(" + From + "," + To + ")";
     }
     
     public void delete(){
