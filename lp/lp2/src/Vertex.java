@@ -17,6 +17,7 @@ public class Vertex {
 	public int children = 1;
 	public String childrens = "";
 	public List<Vertex> outgoing0s = new ArrayList<Vertex>();
+
     /**
      * Constructor for the vertex
      * 
@@ -30,6 +31,7 @@ public class Vertex {
 	Adj = new ArrayList<Edge>();
 	revAdj = new ArrayList<Edge>();   /* only for directed graphs */
 	incomingEdgesPQ = new PriorityQueue<Edge>();
+
     }
 
     /**

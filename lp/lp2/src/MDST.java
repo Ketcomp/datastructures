@@ -17,9 +17,11 @@ import java.util.Stack;
  */
 public class MDST {
 	
+
 	static int vertexCount = 0;
 	static List<Vertex> verticies;
 	
+
 	/* 1. Transform weights so that every node except r has an incoming edge of weight 0:
 for u ∈ V − {r} do
 Let du be the weight of a minimum weight edge into u.
@@ -68,7 +70,6 @@ Reduction in weight of MST by above transformation = Pdu, where u ∈ V − r.
 		}
 		return Pdu;
 	}
-	
 	
 	static Edge getEdge(Vertex v) {
 		Edge minEdge = v.incomingEdgesPQ.peek();
@@ -151,8 +152,7 @@ Reduction in weight of MST by above transformation = Pdu, where u ∈ V − r.
 						v.seen = true;
 					}
 				}
-			}
-			
+			}	
 		}
 	}
 	
@@ -320,6 +320,7 @@ have equal weight.
 		long start = System.currentTimeMillis();
 		findMST(graph);
 		System.out.println("time = "+ (System.currentTimeMillis() - start) + " ms");
+
 	}
 	
 }
