@@ -1,5 +1,3 @@
-import java.util.Comparator;
-
 /**
  * Class that represents an arc in a Graph
  *
