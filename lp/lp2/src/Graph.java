@@ -123,9 +123,7 @@ class Graph implements Iterable<Vertex> {
 	// create a graph instance
 	Graph g = new Graph(n);
 	for (int i = 0; i < m; i++) {
-	    int u = in.nextInt();
-	    int v = in.nextInt();
-	    int w = in.nextInt();
+	    int u = in.nextInt(); int v = in.nextInt(); int w = in.nextInt();
 	    if(directed) {
 		g.addDirectedEdge(u, v, w);
 	    } else {

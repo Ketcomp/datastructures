@@ -17,6 +17,7 @@ public class Vertex {
     public int distance; // distance to the vertex from the source vertex
     public List<Edge> Adj, revAdj; // adjacency list; use LinkedList or ArrayList
     public Set<Edge> unseenEdges;  //for Hierholzer Algo
+    public Iterator<Edge> itr = null;
     /**
      * Constructor for the vertex
      * 
@@ -31,10 +32,19 @@ public class Vertex {
 	unseenEdges = new LinkedHashSet<>();	  //for Hierholzer Algo
     }
 
+    public Iterator<Edge> itr(){
+    	if(itr == null) {
+    		itr = Adj.iterator();
+    	}
+    	return itr; 
+    }
+    
     /**
      * Method to represent a vertex by its name
      */
     public String toString() {
 	return Integer.toString(name);
     }
+    
+    
 }

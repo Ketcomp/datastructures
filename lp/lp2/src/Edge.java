@@ -1,11 +1,14 @@
+import java.util.Comparator;
+
 /**
  * Class that represents an arc in a Graph
  *
  */
-public class Edge {
+public class Edge implements Comparable<Edge>{
     public Vertex From; // head vertex
     public Vertex To; // tail vertex
     public int Weight;// weight of the arc
+    public int reducedWeight;
 	boolean deleted = false;// to remove zero weight cycles
 
     /**
@@ -22,6 +25,7 @@ public class Edge {
 	From = u;
 	To = v;
 	Weight = w;
+	reducedWeight = w;
     }
 
     /**
@@ -55,4 +59,10 @@ public class Edge {
 	public boolean isDeleted() {
 		return deleted;
 	}
+
+	@Override
+	public int compareTo(Edge o) {
+		return reducedWeight - o.reducedWeight ;
+	}
+
 }
