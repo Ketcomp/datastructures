@@ -25,6 +25,10 @@ public class BST<T extends Comparable<? super T>> {
 	size = 0;
     }
 
+    // Constructor for a balanced BST
+    BST(T[] arr) {
+    	
+    }
     // Find x in subtree rooted at node t.  Returns node where search ends.
     Entry<T> find(Entry<T> t, T x) {
 	Entry<T> pre = t;
@@ -89,7 +93,7 @@ public class BST<T extends Comparable<? super T>> {
     Entry<T> oneChild(Entry<T> node) {
 	return node.left == null? node.right : node.left;
     }
-
+    
     // Remove a node from tree
     void remove(Entry<T> node) {
 	if(node.left != null && node.right != null) {
@@ -112,15 +116,30 @@ public class BST<T extends Comparable<? super T>> {
 	    }
 	}
     }
-
-    // remove node that has two children
+    
+    static int rightOrLeft = 0;
+    // remove node that has two children, 
+    // from either right or left depending on int rightOrLeft
     void removeTwo(Entry<T> node) {
-	Entry<T> minRight = node.right;
-	while(minRight.left != null) {
-	    minRight = minRight.left;
+	if (0 == rightOrLeft){
+    	Entry<T> minRight = node.right;
+    	while(minRight.left != null) {
+    		minRight = minRight.left;
+    	}
+    	node.element = minRight.element;
+    	removeOne(minRight);
+    	rightOrLeft = 1;
 	}
-	node.element = minRight.element;
-	removeOne(minRight);
+	else if(1 == rightOrLeft)
+	{
+		Entry<T> maxLeft = node.left;
+    	while(maxLeft.right != null) {
+    		maxLeft = maxLeft.right;
+    	}
+    	node.element = maxLeft.element;
+    	removeOne(maxLeft);
+    	rightOrLeft = 1;
+	}
     }
 
     public static void main(String[] args) {
@@ -146,6 +165,7 @@ public class BST<T extends Comparable<? super T>> {
 		System.out.println();
 		return;
 	    }		
+	    
 	}
     }
 
