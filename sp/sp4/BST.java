@@ -158,8 +158,8 @@ public class BST<T extends Comparable<? super T>> {
     	Entry<T> removedNode;
     	while(!nodeQ.isEmpty()){
     		removedNode = nodeQ.remove();
-    		nodeQ.add(removedNode.left);
-    		nodeQ.add(removedNode.right);
+    		if(removedNode.left != null) nodeQ.add(removedNode.left);
+    		if(removedNode.right != null) nodeQ.add(removedNode.right);
     		result[i++] = (Comparable) removedNode.element;
     	}
     	return result;
