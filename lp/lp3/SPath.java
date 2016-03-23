@@ -17,7 +17,7 @@ import java.util.LinkedList;
 
 class SPath {
 	/*
-	 * Accept graph input either from file or console input.
+	 * Accept graph input, either from a file or the console.
 	 */
 	public static Graph takeInput(String[] args) throws IOException {
 		// Input from file
@@ -51,8 +51,11 @@ class SPath {
 	public static void main(String[] args) throws IOException {
 		Graph myGraph = takeInput(args);
 
-		// Solve by BFS
-		runBFS(myGraph);
+		// // Solve by BFS
+		// runBFS(myGraph);
+
+		// Solve by DAG
+		runDAG(myGraph);
 
 	}// Main ends
 
@@ -91,10 +94,67 @@ class SPath {
 		}
 
 		// Output the results - "Vertex : Distance from S"
-		System.out.print("Solving by BFS\n");
-		for (int k = 1; k < m - 1; k++) {
-			Vertex v = ipGraph.verts.get(k);
+		printResults(ipGraph, "BFS");
+
+	}// runBFS ends
+
+	/*
+	 * Runs DAG shortest path on the input graph
+	 */
+	public static void runDAG(Graph myG) {
+		// Initialize
+		int m = myG.verts.size();
+		for (int i = 1; i < m - 1; i++) {
+			Vertex node = myG.verts.get(i);
+			node.distance = 0;
+			node.seen = false;
+			node.inDegree = 0;
+			for (Edge incoming : node.revAdj) {
+				node.inDegree++;
+			}
+		}
+		Vertex source = myG.verts.get(1);
+		if (source.inDegree != 0) {
+			System.out.println("Error! No source node in input");
+			return;
+		}
+
+		// Run DAG
+		Queue<Vertex> myQ = new LinkedList<>();
+		myQ.add(source);
+		while (!myQ.isEmpty()) {
+			Vertex myV = myQ.remove();
+			for (Edge e : myV.Adj) {
+				Vertex target = e.otherEnd(myV);
+				target.inDegree--;
+				if (null == target.parent){
+					target.parent = myV;
+					target.distance = e.Weight + target.parent.distance;
+				}
+				else{
+					if(target.distance > (e.Weight + myV.distance)){
+						target.parent = myV;
+						target.distance = e.Weight + target.parent.distance;
+					}
+				}
+				if (0 == target.inDegree) {
+					myQ.add(target);
+				}
+			}
+		}
+		// Print results
+		printResults(myG, "DAG\n");
+	}
+
+	/*
+	 * Print results in the format "Solution by BFS/DAG/Dijikstra's/BF Vertex :
+	 * Distance from Source"
+	 */
+	public static void printResults(Graph myG, String method){
+		System.out.print("Solving by "+method);
+		for (int k = 1; k < myG.verts.size() - 1; k++) {
+			Vertex v = myG.verts.get(k);
 			System.out.println("Vertex: " + v.name + ". Distance from S: " + v.distance);
 		}
-	}// runBFS ends
-}
+	}
+}// Class ends
