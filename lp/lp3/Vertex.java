@@ -12,6 +12,7 @@ public class Vertex {
     public Vertex parent; // parent of the vertex
     public int distance; // distance to the vertex from the source vertex
     public List<Edge> Adj, revAdj; // adjacency list; use LinkedList or ArrayList
+    public int inDegree;
 
     /**
      * Constructor for the vertex
