@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
+
+
 /*
 * @author: Gaurav
 * Team: G10
@@ -70,7 +72,7 @@ class SPath {
 		runBFS(myGraph);
 
 		// Solve by DAG
-		//runDAG(myGraph);
+		runDAG(myGraph);
 
 	}// Main ends
 
@@ -165,6 +167,24 @@ class SPath {
 	 * Runs Dijikstra's algo on the input graph
 	 */
 	public static void runDi(Graph myG) {
-
+		// Initialize
+		int m = myG.verts.size();
+		for (int i = 1; i < m-1; i++) {
+			Vertex node = myG.verts.get(i);
+			node.distance = 0;
+			node.seen = false;
+		}
+		
+		// Run Dij's
+		Vertex source = myG.verts.get(1);
+		for(int i = 2; i<m-1; i++) {
+			Vertex candidate = myG.verts.get(i);
+			
+		}
+		
+		
+		
+		
+		
 	}
 }// Class ends
