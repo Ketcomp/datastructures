@@ -48,27 +48,43 @@ class SPath {
 		}
 	}
 
+	/*
+	 * Print results in the format "Solution by BFS/DAG/Dijikstra's/BF Vertex :
+	 * Distance from Source"
+	 */
+	public static void printResults(Graph myG, String method) {
+		System.out.print("Solving by " + method);
+		for (int k = 1; k < myG.verts.size() - 1; k++) {
+			Vertex v = myG.verts.get(k);
+			System.out.println("Vertex: " + v.name + ". Distance from S: " + v.distance);
+		}
+	}
+
+	/*
+	 * Main method
+	 */
 	public static void main(String[] args) throws IOException {
 		Graph myGraph = takeInput(args);
 
-		// // Solve by BFS
-		// runBFS(myGraph);
+		// Solve by BFS - all edge weights are uniform
+		runBFS(myGraph);
 
 		// Solve by DAG
-		runDAG(myGraph);
+		//runDAG(myGraph);
 
 	}// Main ends
 
 	/*
 	 * Runs BFS on the input graph
 	 */
-	public static void runBFS(Graph ipGraph) {
+	public static void runBFS(Graph myG) {
 		// Initialize graph.
-		Vertex source = ipGraph.verts.get(1);
+		Vertex source = myG.verts.get(1);
 		source.distance = 0;
-		int m = ipGraph.verts.size();
+		int uniformWeight = myG.verts.get(1).Adj.get(0).Weight;
+		int m = myG.verts.size();
 		for (int i = 2; i < m - 1; i++) {
-			Vertex node = ipGraph.verts.get(i);
+			Vertex node = myG.verts.get(i);
 			node.seen = false;
 			node.parent = null;
 		}
@@ -89,12 +105,12 @@ class SPath {
 					}
 				}
 				if (current.parent != null)
-					current.distance = current.parent.distance + 1;
+					current.distance = current.parent.distance + uniformWeight;
 			}
 		}
 
 		// Output the results - "Vertex : Distance from S"
-		printResults(ipGraph, "BFS");
+		printResults(myG, "BFS\n");
 
 	}// runBFS ends
 
@@ -127,12 +143,11 @@ class SPath {
 			for (Edge e : myV.Adj) {
 				Vertex target = e.otherEnd(myV);
 				target.inDegree--;
-				if (null == target.parent){
+				if (null == target.parent) {
 					target.parent = myV;
 					target.distance = e.Weight + target.parent.distance;
-				}
-				else{
-					if(target.distance > (e.Weight + myV.distance)){
+				} else {
+					if (target.distance > (e.Weight + myV.distance)) {
 						target.parent = myV;
 						target.distance = e.Weight + target.parent.distance;
 					}
@@ -147,14 +162,9 @@ class SPath {
 	}
 
 	/*
-	 * Print results in the format "Solution by BFS/DAG/Dijikstra's/BF Vertex :
-	 * Distance from Source"
+	 * Runs Dijikstra's algo on the input graph
 	 */
-	public static void printResults(Graph myG, String method){
-		System.out.print("Solving by "+method);
-		for (int k = 1; k < myG.verts.size() - 1; k++) {
-			Vertex v = myG.verts.get(k);
-			System.out.println("Vertex: " + v.name + ". Distance from S: " + v.distance);
-		}
+	public static void runDi(Graph myG) {
+
 	}
 }// Class ends
