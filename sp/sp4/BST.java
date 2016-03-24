@@ -126,7 +126,7 @@ public class BST<T extends Comparable<? super T>> {
 	}
     }
     
-    static int rightOrLeft = 0;
+     static int rightOrLeft = 0;
     // remove node that has two children, 
     // alternately from either right or left depending on int rightOrLeft
     void removeTwo(Entry<T> node) {
@@ -188,7 +188,7 @@ public class BST<T extends Comparable<? super T>> {
     		removedNode = nodeQ.remove();
     		if(removedNode.left != null) nodeQ.add(removedNode.left);
     		if(removedNode.right != null) nodeQ.add(removedNode.right);
-    		result[i++] = (Comparable) removedNode.element;
+    		result[i++] = removedNode.element;
     	}
     	return result;
     }
