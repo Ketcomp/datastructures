@@ -159,6 +159,7 @@ class SPath {
 				}
 			}
 		}
+
 		// Print results
 		printResults(myG, "DAG\n");
 	}
