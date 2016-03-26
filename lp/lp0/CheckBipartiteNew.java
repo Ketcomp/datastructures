@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @author rbk
  * Example to illustrate an algorithm that tests if a given
  * undirected graph is bipartite.  Nodes are classified into

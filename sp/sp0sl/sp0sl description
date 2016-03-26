@@ -1,0 +1,10 @@
+CS 6301.002.  Implementation of advanced data structures and algorithms
+Spring 2016
+Short Project 0SL (Skip List)
+Wed, Mar 9, 2016
+
+Ver 1.0: Initial description (Mar 23, 9:00 AM).
+
+Due: 1:00 PM, Thu, Mar 31.
+This project is optional. Code as many functions of the skip list as you can. If you submit code, write code for at least the following: add, remove, contains. Compare the performance of SkipList vs TreeSet on randomly generated operations (add, contains, remove).
+Code base: SkipList.java
