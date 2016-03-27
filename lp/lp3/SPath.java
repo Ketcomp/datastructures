@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
-
-
 /*
 * @author: Gaurav
 * Team: G10
@@ -69,10 +67,13 @@ class SPath {
 		Graph myGraph = takeInput(args);
 
 		// Solve by BFS - all edge weights are uniform
-		runBFS(myGraph);
+		// runBFS(myGraph);
 
 		// Solve by DAG
-		runDAG(myGraph);
+		// runDAG(myGraph);
+
+		// Solve by Dijikstra's algorithm
+		runDi(myGraph);
 
 	}// Main ends
 
@@ -169,23 +170,33 @@ class SPath {
 	 */
 	public static void runDi(Graph myG) {
 		// Initialize
-		int m = myG.verts.size();
-		for (int i = 1; i < m-1; i++) {
+		myG.verts.get(1).distance = 0;
+		int graphSize = myG.verts.size();
+		for (int i = 2; i < graphSize - 1; i++) {
 			Vertex node = myG.verts.get(i);
-			node.distance = 0;
+			node.distance = Integer.MAX_VALUE;
 			node.seen = false;
+			node.parent = null;
 		}
-		
-		// Run Dij's
-		Vertex source = myG.verts.get(1);
-		for(int i = 2; i<m-1; i++) {
-			Vertex candidate = myG.verts.get(i);
-			
+
+		// Run Dijikstra's
+		// Indexed PQ of vertices using vertex.distance as priority.
+		Vertex[] array = myG.verts.toArray(new Vertex[myG.verts.size()]);
+		IndexedHeap<Vertex> heap = new IndexedHeap<>(array, myG.verts.get(1));
+		while(!heap.isEmpty()){
+			Vertex vert = heap.deleteMin();
+			vert.seen = true;
+			for(Edge edj : vert.Adj){		
+				Vertex otherEnd = edj.To;
+				if(otherEnd.distance > vert.distance + edj.Weight && !otherEnd.seen){
+					otherEnd.distance = vert.distance + edj.Weight;
+					otherEnd.parent = vert;
+					heap.decreaseKey(otherEnd);
+				}
+			}
 		}
-		
-		
-		
-		
-		
+		System.out.println("");
+		// Output the results - "Vertex : Distance from S"
+		printResults(myG, "Dijikstra's\n");
 	}
 }// Class ends
