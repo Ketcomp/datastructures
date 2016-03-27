@@ -2,10 +2,10 @@ import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.util.Scanner;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.io.File;
+
 /*
 * @author: Gaurav
 * Team: G10
@@ -22,22 +22,10 @@ class SPath {
 	public static Graph takeInput(String[] args) throws IOException {
 		// Input from file
 		if (args.length != 0) {
-			FileReader fr = new FileReader(args[0]);
-			BufferedReader br = new BufferedReader(fr);
-
-			// create a graph instance
-			int n, m;
-			n = br.read();
-			m = br.read();
-			Graph graphFromFile = new Graph(n);
-			for (int i = 0; i < m; i++) {
-				int u = br.read();
-				int v = br.read();
-				int w = br.read();
-				graphFromFile.addDirectedEdge(u, v, w);
-			}
-			// Close br
-			br.close();
+			String location = args[0];
+			File input = new File(location);
+			Scanner in = new Scanner(input);
+			Graph graphFromFile = Graph.readGraph(in, true);
 			return graphFromFile;
 		}
 		// Input from Console
@@ -49,14 +37,19 @@ class SPath {
 	}
 
 	/*
-	 * Print results in the format "Solution by BFS/DAG/Dijikstra's/BF Vertex :
-	 * Distance from Source"
+	 * Print output
 	 */
 	public static void printResults(Graph myG, String method) {
-		System.out.print("Solving by " + method);
-		for (int k = 1; k < myG.verts.size() - 1; k++) {
-			Vertex v = myG.verts.get(k);
-			System.out.println("Vertex: " + v.name + ". Distance from S: " + v.distance);
+		long sum = 0;
+		for (int k = 1; k <= myG.verts.size() - 1; k++) {
+			sum += myG.verts.get(k).distance;
+		}
+		System.out.print(method+" "+sum);
+		if(myG.verts.size() <= 100){
+			for (int k = 1; k <= myG.verts.size() - 1; k++) {
+				Vertex v = myG.verts.get(k);
+				System.out.println(v.name+" "+v.parent.name+" "+v.distance);
+			} 
 		}
 	}
 
@@ -67,13 +60,13 @@ class SPath {
 		Graph myGraph = takeInput(args);
 
 		// Solve by BFS - all edge weights are uniform
-		// runBFS(myGraph);
+		runBFS(myGraph);
 
 		// Solve by DAG
 		// runDAG(myGraph);
 
 		// Solve by Dijikstra's algorithm
-		runDi(myGraph);
+		//runDi(myGraph);
 
 	}// Main ends
 
