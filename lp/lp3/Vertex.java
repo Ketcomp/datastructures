@@ -14,6 +14,8 @@ public class Vertex implements Index, Comparator<Vertex>{
     public List<Edge> Adj, revAdj; // adjacency list; use LinkedList or ArrayList
     public int inDegree; 	// Added to accommodate DAG's needs
     private int index = 0; 	// To implement Index
+    public boolean active = false; //for topological order
+    public int count = 0; //for BellmanFord
 
     /**
      * Constructor for the vertex
@@ -35,7 +37,7 @@ public class Vertex implements Index, Comparator<Vertex>{
      * Method to represent a vertex by its name
      */
     public String toString() {
-    	return Integer.toString(name)+ " : " + index;
+    	return Integer.toString(name);
     }
     @Override
     public void putIndex(int index) {

@@ -158,6 +158,42 @@ class SPath {
 		printResults(myG, "DAG\n");
 	}
 
+	public static boolean bellman(Graph g, Vertex source) {
+		Queue<Vertex> q = new LinkedList<Vertex>();
+		for (Vertex v : g.verts) {
+			if (v == null)
+				continue;
+			v.distance = Integer.MAX_VALUE;
+			v.parent = null;
+			v.count = 0;
+			v.seen = false;
+		}
+		source.distance = 0;
+		source.seen = true;
+		q.add(source);
+		Vertex u;
+		Vertex v;
+		while (!q.isEmpty()) {
+			u = q.remove();
+			u.seen = false;
+			u.count = u.count + 1;
+			if (u.count >= g.numNodes)
+				return false;
+			for (Edge e : u.Adj) {
+				v = e.otherEnd(u);
+				if (v.distance > u.distance + e.Weight) {
+					v.distance = u.distance + e.Weight;
+					v.parent = u;
+					if (!v.seen) {
+						q.add(v);
+						v.seen = true;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
 	/*
 	 * Runs Dijikstra's algo on the input graph
 	 */
@@ -165,7 +201,7 @@ class SPath {
 		// Initialize
 		myG.verts.get(1).distance = 0;
 		int graphSize = myG.verts.size();
-		for (int i = 2; i < graphSize - 1; i++) {
+		for (int i = 2; i <= graphSize - 1; i++) {
 			Vertex node = myG.verts.get(i);
 			node.distance = Integer.MAX_VALUE;
 			node.seen = false;
