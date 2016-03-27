@@ -40,14 +40,13 @@ class SPath {
 	 * Print output
 	 */
 	public static void printResults(Graph myG, String method) {
-		System.out.print(method+" ");
 		long sum = 0;
-		for (int k = 1; k < myG.verts.size() - 1; k++) {
+		for (int k = 1; k <= myG.verts.size() - 1; k++) {
 			sum += myG.verts.get(k).distance;
 		}
-		System.out.println(sum);
+		System.out.print(method+" "+sum);
 		if(myG.verts.size() <= 100){
-			for (int k = 1; k < myG.verts.size() - 1; k++) {
+			for (int k = 1; k <= myG.verts.size() - 1; k++) {
 				Vertex v = myG.verts.get(k);
 				System.out.println(v.name+" "+v.parent.name+" "+v.distance);
 			} 
