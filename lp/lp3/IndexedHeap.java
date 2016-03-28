@@ -62,7 +62,6 @@ public class IndexedHeap<T extends Index> extends BinaryHeap<T> {
     	Scanner in = new Scanner(System.in);
         Graph g = Graph.readGraph(in, false);
         Vertex[] array = g.verts.toArray(new Vertex[g.verts.size()]);
-        int a = g.verts.size();
     	IndexedHeap<Vertex> heap = new IndexedHeap<>(array, g.verts.get(1));
     	
     	for(int i= 0; i < 10; i++) {

@@ -16,6 +16,7 @@ public class Vertex implements Index, Comparator<Vertex>{
     private int index = 0; 	// To implement Index
     public boolean active = false; //for topological order
     public int count = 0; //for BellmanFord
+    public int color = 0; //for finding cycles
 
     /**
      * Constructor for the vertex
