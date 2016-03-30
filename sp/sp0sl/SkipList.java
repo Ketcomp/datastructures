@@ -1,42 +1,38 @@
 
-/** See  http://en.wikipedia.org/wiki/Skip_list
- */
-/*
-* @author: Gaurav
-* Team: G10
-* Gaurav Ketkar
-* Madhuri Abnave
-* Vijay Mungara
-* Malav Shah
-*/
-import java.lang.Comparable;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 
 public class SkipList<T extends Comparable<? super T>> {
 	int maxLevel;
-	private SLE head;
-	private SLE tail;
-	//Class SkipList's constructor
-	private SkipList(){
-		head = null;
-		tail = null;
-		maxLevel = 0;
-	}
+	private SLE<T> head;
+	private SLE<T> tail;
 	
+	// Class SkipList's constructor
+	private SkipList(T negInfinity,T posInfinity,int max) {
+		maxLevel = max;
+		tail = new SLE<T>(negInfinity, null,null,maxLevel);
+		head = new SLE<T>(posInfinity, null,null,maxLevel);
+		tail.prev=head;
+		for(int i=0;i<maxLevel;i++)
+		head.next[i]=tail;
+		
+	}
+
 	/*
 	 * An object of class SkipListEntry (SLE) represents an element of the skip
 	 * list
 	 */
-	public class SLE<Comparable> {
-		SLE prev;
-		SLE[] next;
+	public class SLE<T> {
+		SLE<T> prev;
+		SLE<T>[] next;
 		int lev;
-		int element;
+		T element;
+
 		// Constructor
-		SLE(int x, int level) {
-			next = new SLE[level];
+		SLE(T x,SLE<T> prv, SLE<T>[] nxt,int level) {
+			next = nxt;
+			prev=prv;
 			lev = level;
 			element = x;
 		}
@@ -47,25 +43,25 @@ public class SkipList<T extends Comparable<? super T>> {
 	 */
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		SkipList<Integer> skList = new SkipList<Integer>();
+
 		// Initialize the list
-		skList.maxLevel = in.nextInt();
-		skList.head.element = Integer.MIN_VALUE;
-		skList.tail.element = Integer.MAX_VALUE;	
-		
+		int size= in.nextInt();
+		int maxLevel = (int) Math.log(size); 
+		SkipList<Integer> skList = new SkipList<Integer>(Integer.MIN_VALUE,Integer.MAX_VALUE,maxLevel);
+
 		while (in.hasNext()) {
 			Integer element = in.nextInt();
 			skList.add(element);
 		}
-	in.close();
+		in.close();
 	}
 
 	SLE<?> find(T x) {
-		int num = (Integer) x;
-		SLE prev;
-		SLE p = head;
+		// int num = (Integer) x;
+		SLE<T> prev;
+		SLE<T> p = head;
 		for (int i = maxLevel; i > 0; i--) {
-			while (p.next[i].element < num) {
+			while (p.next[i].element.compareTo(x) < 0) {
 				p = p.next[i];
 			}
 		}
@@ -143,7 +139,7 @@ public class SkipList<T extends Comparable<? super T>> {
 	}
 
 	T findIndex(int index) { // Return the element at a given position (index)
-								// in the list
+		// in the list
 		return null;
 	}
 
