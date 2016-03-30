@@ -10,6 +10,7 @@
 * Malav Shah
 */
 import java.lang.Comparable;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
@@ -33,39 +34,42 @@ public class SkipList<T extends Comparable<? super T>> {
 		SLE prev;
 		SLE[] next;
 		int lev;
-		int element;
+		T element;
 		// Constructor
-		SLE(int x, int level) {
+		SLE(T x, int level) {
 			next = new SLE[level];
 			lev = level;
 			element = x;
 		}
 	}
 
+	
 	/*
 	 * Main method
 	 */
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-		SkipList<Integer> skList = new SkipList<Integer>();
+		SkipList<Integer> skL = new SkipList<Integer>();
 		// Initialize the list
-		skList.maxLevel = in.nextInt();
-		skList.head.element = Integer.MIN_VALUE;
-		skList.tail.element = Integer.MAX_VALUE;	
-		
+		skL.head.element = Integer.MIN_VALUE;
+		skL.tail.element = Integer.MAX_VALUE;	
+		int sizeOfList = 0;
 		while (in.hasNext()) {
 			Integer element = in.nextInt();
-			skList.add(element);
+			skL.add(element);
+			sizeOfList++;
 		}
+		skL.maxLevel = (int)Math.log(sizeOfList);
+
 	in.close();
 	}
 
-	SLE<?> find(T x) {
-		int num = (Integer) x;
+	SLE find(T x) {
+		T num = x;
 		SLE prev;
 		SLE p = head;
 		for (int i = maxLevel; i > 0; i--) {
-			while (p.next[i].element < num) {
+			while (compare(p.next[i].element, num)) {
 				p = p.next[i];
 			}
 		}
@@ -77,14 +81,14 @@ public class SkipList<T extends Comparable<? super T>> {
 	 * Add an element x to the list. Returns true if x was a new element.
 	 */
 	boolean add(T x) {
-		SLE prev = find(x);
+		SLE<T> prev = find(x);
 		int val = (Integer) x;
 		if (prev.next[0].element == (Integer) x) {
 			prev.next[0].element = val;
 			return false;
 		} else {
 			int lev = choice(maxLevel);
-			SLE newEntry = new SLE<Object>(val, lev);
+			SLE<T> newEntry = new SLE<>(val, lev);
 			for (int i = 0; i < lev; i++) {
 				newEntry.next[i] = prev.next[i];
 				prev.next[i] = newEntry;
