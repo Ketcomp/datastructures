@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.TreeSet;
 
 public class SkipList<T extends Comparable<? super T>> {
 	int maxLevel;
@@ -10,14 +11,11 @@ public class SkipList<T extends Comparable<? super T>> {
 	// Class SkipList's constructor
 	private SkipList(T negInfinity, T posInfinity, int max) {
 		maxLevel = max;
-		tail = new SLE<T>(posInfinity, null, null, maxLevel);
-		SLE[] nextList = new SLE[maxLevel];
-		for (int i = 0; i < maxLevel; i++)
-			nextList[i] = tail;
-
-		head = new SLE<T>(negInfinity, null, nextList, maxLevel);
-		tail.prev = head;
-
+		head = new SLE<T>(negInfinity, maxLevel);
+		tail = new SLE<T>(posInfinity, 0);
+		for (int i = 0; i < maxLevel; i++) {
+			head.next[i] = tail;
+		}
 	}
 
 	/*
@@ -25,17 +23,21 @@ public class SkipList<T extends Comparable<? super T>> {
 	 * list
 	 */
 	public class SLE<T> {
-		SLE<T> prev;
+		//SLE<T> prev;
 		SLE<T>[] next;
 		int lev;
 		T element;
 
 		// Constructor
-		SLE(T x, SLE<T> prv, SLE<T>[] nxt, int level) {
-			next = nxt;
-			prev = prv;
+		SLE(T x, int level) {
+			next = new SLE[level];
 			lev = level;
 			element = x;
+		}
+		
+		@Override
+		public String toString() {
+			return element+" ";
 		}
 	}
 
@@ -44,29 +46,76 @@ public class SkipList<T extends Comparable<? super T>> {
 	 */
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-
+		
 		// Initialize the list
-		int size = in.nextInt();
+		//int size = in.nextInt();
+		int size = 1000;
+		
 		int maxLevel = (int) Math.log(size);
 		SkipList<Integer> skList = new SkipList<Integer>(Integer.MIN_VALUE, Integer.MAX_VALUE, maxLevel);
-
-		while (in.hasNext()) {
-			Integer element = in.nextInt();
+		long start = System.currentTimeMillis();
+		Integer element = null;
+		for(int i = 0; i < size; i++) {
+			element = (int)(Math.random()*100*size);
 			skList.add(element);
 		}
+		System.out.println("Skiplist add operation for "+size+" elements: "+(System.currentTimeMillis() - start)+"ms");
+		
+		start = System.currentTimeMillis();
+		TreeSet<Integer> treeset = new TreeSet<>();
+		for(int i = 0; i < size; i++) {
+			element = (int)(Math.random()*100*size);
+			treeset.add(element);
+		}
+		System.out.println("TreeSet add operation for "+size+" elements: "+(System.currentTimeMillis() - start)+"ms");
+		
+		System.out.println();
+		
+		start = System.currentTimeMillis();
+		for(int i = 0; i < size; i++) {
+			element = (int)(Math.random()*100*size);
+			skList.contains(element);
+		}
+		System.out.println("Skiplist contains operation for "+size+" elements: "+(System.currentTimeMillis() - start)+"ms");
+		
+		start = System.currentTimeMillis();
+		for(int i = 0; i < size; i++) {
+			element = (int)(Math.random()*100*size);
+			treeset.contains(element);
+		}
+		System.out.println("TreeSet contains operation for "+size+" elements: "+(System.currentTimeMillis() - start)+"ms");
+		
+		System.out.println();	
+		start = System.currentTimeMillis();
+		for(int i = 0; i < size; i++) {
+			element = (int)(Math.random()*100*size);
+			skList.remove(element);
+		}
+		System.out.println("Skiplist remove operation for "+size+" elements: "+(System.currentTimeMillis() - start)+"ms");
+		
+		start = System.currentTimeMillis();
+		for(int i = 0; i < size; i++) {
+			element = (int)(Math.random()*100*size);
+			treeset.remove(element);
+		}
+		System.out.println("TreeSet remove operation for "+size+" elements: "+(System.currentTimeMillis() - start)+"ms");
+		
 		in.close();
+		
+		
 	}
 
-	SLE<?> find(T x) {
+	SLE<T>[] find(T x) {
 		// int num = (Integer) x;
-		SLE<T> prev;
+		SLE<T> prev[] = new SLE[maxLevel];
 		SLE<T> p = head;
 		for (int i = maxLevel - 1; i >= 0; i--) {
 			while (p.next[i].element.compareTo(x) < 0) {
 				p = p.next[i];
 			}
+			prev[i] = p;
 		}
-		prev = p;
+		
 		return prev;
 	}
 
@@ -74,33 +123,29 @@ public class SkipList<T extends Comparable<? super T>> {
 	 * Add an element x to the list. Returns true if x was a new element.
 	 */
 	boolean add(T x) {
-		SLE prev = find(x);
+		SLE[] prev = find(x);
 
-		if (prev.next[0].element == (Integer) x) {
-			prev.next[0].element = x;
+		if (prev[0].next[0].element.equals(x)) {
+			prev[0].next[0].element = x;
 			return false;
-		} else {
-			int lev = choice(maxLevel);
-			// (value, prev,next,maxLevel);
-			SLE newEntry = new SLE<T>(x, null, null, lev);
-			SLE[] nextList = new SLE[lev];
-
-			for (int i = 0; i < lev; i++) {
-				nextList[i] = prev.next[i];
-
-				prev.next[i] = newEntry;
-
-			}
-			newEntry.next = nextList;
-			return true;
 		}
+		
+		int lev = choice(maxLevel);
+		// (value, prev,next,maxLevel);
+		SLE n = new SLE<T>(x, lev);
+		//SLE[] nextList = new SLE[lev];
+		for (int i = 0; i < lev; i++) {
+			n.next[i] = prev[i].next[i];
+			prev[i].next[i] = n;
+		}
+		return true;
 	}
 
 	/*
 	 * Returns a random value between (1, maxLevel) for the height of next[]
 	 */
 	int choice(int maxLevel) {
-		int i = 1;
+		int i = 0;
 		boolean b = false;
 		Random rand = new Random();
 		while (i < maxLevel) {
@@ -117,8 +162,8 @@ public class SkipList<T extends Comparable<? super T>> {
 	 * Is x in the list?
 	 */
 	boolean contains(T x) {
-		SLE prev = find(x);
-		return (prev.next[0].element == (Integer) x);
+		SLE<T>[] prev = find(x);
+		return (prev[0].next[0].element.equals(x));
 	}
 
 	/*
@@ -126,14 +171,14 @@ public class SkipList<T extends Comparable<? super T>> {
 	 */
 	boolean remove(T x) {
 		int value = (Integer) x;
-		SLE prev = find(x);
-		SLE toRemove = prev.next[0];
-		if (toRemove.element != (Integer) x) {
+		SLE<T>[] prev = find(x);
+		SLE n = prev[0].next[0];
+		if (!n.element.equals(x)) {
 			return false;
 		} else {
 			for (int i = 0; i < maxLevel; i++) {
-				if (prev.next[i] == toRemove) {
-					prev.next[i] = toRemove.next[i];
+				if (prev[i].next[i].equals(n)) {
+					prev[i].next[i] = n.next[i];
 				} else
 					break;
 			}
