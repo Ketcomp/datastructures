@@ -1,4 +1,3 @@
-
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
@@ -7,16 +6,18 @@ public class SkipList<T extends Comparable<? super T>> {
 	int maxLevel;
 	private SLE<T> head;
 	private SLE<T> tail;
-	
+
 	// Class SkipList's constructor
-	private SkipList(T negInfinity,T posInfinity,int max) {
+	private SkipList(T negInfinity, T posInfinity, int max) {
 		maxLevel = max;
-		tail = new SLE<T>(negInfinity, null,null,maxLevel);
-		head = new SLE<T>(posInfinity, null,null,maxLevel);
-		tail.prev=head;
-		for(int i=0;i<maxLevel;i++)
-		head.next[i]=tail;
-		
+		tail = new SLE<T>(posInfinity, null, null, maxLevel);
+		SLE[] nextList = new SLE[maxLevel];
+		for (int i = 0; i < maxLevel; i++)
+			nextList[i] = tail;
+
+		head = new SLE<T>(negInfinity, null, nextList, maxLevel);
+		tail.prev = head;
+
 	}
 
 	/*
@@ -30,9 +31,9 @@ public class SkipList<T extends Comparable<? super T>> {
 		T element;
 
 		// Constructor
-		SLE(T x,SLE<T> prv, SLE<T>[] nxt,int level) {
+		SLE(T x, SLE<T> prv, SLE<T>[] nxt, int level) {
 			next = nxt;
-			prev=prv;
+			prev = prv;
 			lev = level;
 			element = x;
 		}
@@ -45,9 +46,9 @@ public class SkipList<T extends Comparable<? super T>> {
 		Scanner in = new Scanner(System.in);
 
 		// Initialize the list
-		int size= in.nextInt();
-		int maxLevel = (int) Math.log(size); 
-		SkipList<Integer> skList = new SkipList<Integer>(Integer.MIN_VALUE,Integer.MAX_VALUE,maxLevel);
+		int size = in.nextInt();
+		int maxLevel = (int) Math.log(size);
+		SkipList<Integer> skList = new SkipList<Integer>(Integer.MIN_VALUE, Integer.MAX_VALUE, maxLevel);
 
 		while (in.hasNext()) {
 			Integer element = in.nextInt();
@@ -60,7 +61,7 @@ public class SkipList<T extends Comparable<? super T>> {
 		// int num = (Integer) x;
 		SLE<T> prev;
 		SLE<T> p = head;
-		for (int i = maxLevel; i > 0; i--) {
+		for (int i = maxLevel - 1; i >= 0; i--) {
 			while (p.next[i].element.compareTo(x) < 0) {
 				p = p.next[i];
 			}
@@ -74,26 +75,32 @@ public class SkipList<T extends Comparable<? super T>> {
 	 */
 	boolean add(T x) {
 		SLE prev = find(x);
-		int val = (Integer) x;
+
 		if (prev.next[0].element == (Integer) x) {
-			prev.next[0].element = val;
+			prev.next[0].element = x;
 			return false;
 		} else {
 			int lev = choice(maxLevel);
-			SLE newEntry = new SLE<Object>(val, lev);
+			// (value, prev,next,maxLevel);
+			SLE newEntry = new SLE<T>(x, null, null, lev);
+			SLE[] nextList = new SLE[lev];
+
 			for (int i = 0; i < lev; i++) {
-				newEntry.next[i] = prev.next[i];
+				nextList[i] = prev.next[i];
+
 				prev.next[i] = newEntry;
+
 			}
+			newEntry.next = nextList;
 			return true;
 		}
 	}
 
 	/*
-	 * Returns a random value between (0, maxLevel) for the height of next[]
+	 * Returns a random value between (1, maxLevel) for the height of next[]
 	 */
 	int choice(int maxLevel) {
-		int i = 0;
+		int i = 1;
 		boolean b = false;
 		Random rand = new Random();
 		while (i < maxLevel) {
