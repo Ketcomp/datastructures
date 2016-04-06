@@ -4,8 +4,10 @@
  *
  */
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 class Graph implements Iterable<Vertex> {
     public List<Vertex> verts; // array of vertices

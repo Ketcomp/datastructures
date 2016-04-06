@@ -4,8 +4,10 @@
  *
  */
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 class Graph implements Iterable<Vertex> {
     public List<Vertex> verts; // array of vertices
@@ -119,13 +121,46 @@ class Graph implements Iterable<Vertex> {
 	// read the graph related parameters
 	int n = in.nextInt(); // number of vertices in the graph
 	int m = in.nextInt(); // number of edges in the graph
+	
+	// Determine if DAG applicable
+	int firstWeight = 0;
 
 	// create a graph instance
 	Graph g = new Graph(n);
-	for (int i = 0; i < m; i++) {
-	    int u = in.nextInt();
-	    int v = in.nextInt();
-	    int w = in.nextInt();
+	int u = in.nextInt();
+	int v = in.nextInt();
+    int w = in.nextInt();
+    firstWeight = w;    
+    // Add edges
+    if(directed) {
+	g.addDirectedEdge(u, v, w);
+    } else {
+	g.addEdge(u, v, w);
+    }
+	
+    for (int i = 1; i < m; i++) { // i was from 0 to < m now, it is from 1.
+	    u = in.nextInt();
+	    v = in.nextInt();
+	    w = in.nextInt();
+	    
+	    // Detect if all edge weights are same. Don't enter condition if notBFS is 'True'
+	    if(firstWeight != w) {
+	    	// Meaning, BFS not applicable
+	    	SPath.notBFS = true;
+	    	if(w < 0){
+	    		// Dij not applicable
+	    		SPath.notDij = true;
+	    	}
+	    	else{ // Dij may be applicable
+	    		if(!SPath.notDij)SPath.whichMethod = 3; // Dij is selected
+	    	}
+	    }
+	    else{
+	    	// This means run BFS
+	    	if(!SPath.notBFS) SPath.whichMethod = 1; 	  // BFS is selected
+	    }
+	    
+	    // Add edges
 	    if(directed) {
 		g.addDirectedEdge(u, v, w);
 	    } else {
