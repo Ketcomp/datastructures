@@ -25,27 +25,45 @@ public class MDS {
 	 * maintain the consistency of the database.
 	 */
 	int insert(long id, double price, long[] description, int size) {
+		int toReturn = 1; // 1 if Item is new 0 otherwise.
 		Item newThing = new Item(id, price, description, size);
 		
-		// Insert into primary datastructure.
-		primary.put(id, newThing);
-		
-		// Insert into secondary datastructure.
-		for(int i=0; i<size; i++){
-			// Find out if there is already a TreeSet for that description
-			if(secondary.get(description[i]) == null){
-				PriceCompare pc = new PriceCompare();
-				TreeSet<Item> newSet = new TreeSet<Item>(pc);
-				newSet.add(newThing);
-				
-				secondary.put(description[i], newSet);
+		// Does the item already exist?
+		if(primary.get(id) != null){
+			toReturn = 0;
+			// Update it in primary.
+			Item alreadyThere = primary.get(id);
+			alreadyThere.price = price;
+			if(description.length != 0){
+				alreadyThere.description = description;
 			}
-			else{ // The tree set already exists.
-				secondary.get(description[i]).add(newThing);
+			// Update it in secondary.
+			for(int i=0; i<size; i++){
+				// Price 
+				secondary.get(description[i]).
 			}
 		}
-		
-		return 0;
+		// Item doesn't exist, it is new.
+		else{
+			// Insert into primary datastructure.
+			primary.put(id, newThing);
+			
+			// Insert into secondary datastructure.
+			for(int i=0; i<size; i++){
+				// Find out if there is already a TreeSet for that description
+				if(secondary.get(description[i]) == null){
+					PriceCompare pc = new PriceCompare();
+					TreeSet<Item> newSet = new TreeSet<Item>(pc);
+					newSet.add(newThing);
+					
+					secondary.put(description[i], newSet);
+				}
+				else{ // The tree set already exists.
+					secondary.get(description[i]).add(newThing);
+				}
+			}
+		}
+		return toReturn;
 	}
 
 	/*
@@ -59,7 +77,10 @@ public class MDS {
 			return 0;
 		}
 	}
-
+	
+	/*
+	 * Delete Item from primary and secondary datastructures.
+	 */
 	long delete(long id) {
 		long[] description = primary.get(id).description;
 		Item itemToDelete = primary.get(id);
@@ -69,7 +90,7 @@ public class MDS {
 		
 		// Remove from the secondary
 		for(int i=0; i<description.length; i++){
-			TreeSet<Item> removeFromThis = secondary.remove(description[i]);
+			TreeSet<Item> removeFromThis = secondary.get(description[i]);
 			removeFromThis.remove(itemToDelete);
 		}
 		return 0;
