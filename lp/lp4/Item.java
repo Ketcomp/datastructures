@@ -14,4 +14,9 @@ public class Item {
 		for (int i = 0; i < size; i++)
 			this.description[i] = description[i];
 	}
+	
+	Item (double price)
+	{
+	this.price= price;
+	}
 }
