@@ -46,6 +46,29 @@ class PerCom{
 		}
 	}
 	
+	/*
+	 * Output all n! permutations of A[1...n]
+	 * Use swap just once.
+	 */
+	public static void heaps(int i){
+		if(1 == i){
+			visit();
+			System.out.println();
+		}
+		else{
+			for(int n = 0; n<i; n++){
+				heaps(i-1);
+				if(0 == i%2){
+					swap(n, i-1);
+				}
+				else{
+					swap(0, i-1);
+				}
+			}
+			heaps(i-1);
+		}
+	}
+	
 	public static void main(String[] args){
 		Scanner in = new Scanner(System.in);
 		int size = in.nextInt();
@@ -59,10 +82,12 @@ class PerCom{
 			permuArr[i] = new permuObject();
 			permuArr[i].value = i+1;
 		}
-		System.out.println("Combinations");
-		combination(size, k);
-		System.out.println("Permutations");
-		permute(k);
+//		System.out.println("Combinations");
+//		combination(size, k);
+//		System.out.println("Permutations");
+//		permute(k);
+		System.out.println("Heap's");
+		heaps(k);
 	}
 	
 	/*
