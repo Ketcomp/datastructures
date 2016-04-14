@@ -1,67 +1,100 @@
 import java.util.Scanner;
 
 class PerCom{
+	static class permuObject{
+		boolean selected = true;
+		int value = 0;
+	}
 	static boolean[] combiArr;
-	static int[] permuArr;
+	static permuObject[] permuArr;
 	
 	/*
 	 * Visit every combination of k objects out of n
 	 */
 	public static void combination(int n, int k){
-		if (k < n){
+		if (k > n){
 			return;
 		}
 		else if(k == 0){
-			visitCombi();
+			visit();
+			System.out.println();
 		}
 		else{ // Choose A[n]?
 			// Case1 : n is not selected.
 			combination(n-1, k);
 			// Case2 : n is selected.
-			combiArr[n] = true;
+			combiArr[n-1] = true;
 			combination(n-1, k-1);
-			combiArr[n] = false;
+			combiArr[n-1] = false;
 		}
 	}
 	
-	public static void permutation(int i){
+	/*
+	 * Output all n! permutations of A[1...n]
+	 */
+	public static void permute(int i){
 		if(i == 0){
-			visitPermu();
+			visit(permuArr);
+			System.out.println();
+		}
+		else{
+			for(int j = 0; j< i; j++){
+				swap(i-1,j);
+				permute(i-1);
+				swap(i-1,j); // Clean-up	
+			}
 		}
 	}
 	
 	public static void main(String[] args){
 		Scanner in = new Scanner(System.in);
 		int size = in.nextInt();
+		int k = in.nextInt();
 		combiArr = new boolean[size];
 		for(int i = 0; i<size; i++){
 			combiArr[i] = false;
 		}
-		
+		permuArr = new permuObject[size];
+		for(int i = 0; i<size; i++){
+			permuArr[i] = new permuObject();
+			permuArr[i].value = i+1;
+		}
+		System.out.println("Combinations");
+		combination(size, k);
+		System.out.println("Permutations");
+		permute(k);
 	}
 	
+	/*
+	 * Swap elements at i and j in permuArr
+	 */
 	public static void swap(int i, int j){
 		int temp;
-		temp = permuArr[i];
-		permuArr[i] = permuArr[j];
-		permuArr[j] = temp;
+		temp = permuArr[i].value;
+		permuArr[i].value = permuArr[j].value;
+		permuArr[j].value = temp;
 	}
-	
-	public static void visitPermu(){
-		int size = permuArr.length;
-		for(int i =0; i<size; i++){
-			if()
+
+	/*
+	 * Visit every 'True' element of permu and print it.
+	 */
+	public static void visit(permuObject[] permu){
+		int size = permu.length;
+		for(int i = 0; i<size; i++){
+			if(true == permu[i].selected){
+				System.out.print(permu[i].value);
+			}
 		}
 	}
 	
 	/*
-	 * Visits all elements of combiArr and prints them out.
+	 * Visits all 'True' elements of combiArr and prints them out.
 	 */
-	public static void visitCombi(){
+	public static void visit(){
 		int size = combiArr.length;
 		for(int i = 0; i<size; i++){
 			if(true == combiArr[i]){
-				System.out.println(combiArr[i]);
+				System.out.print(i+1);
 			}
 		}
 	}
