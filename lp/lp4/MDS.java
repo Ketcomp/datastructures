@@ -144,7 +144,7 @@ public class MDS {
 			// Update it in secondary.
 			for (int i = 0; i < size; i++) {
 				// Price
-				secondary.get(description[i]).
+				secondary.get(description[i])you
 			}
 		} else {
 			// Insert into secondary datastructure.
