@@ -1,4 +1,12 @@
 import java.util.Scanner;
+/*
+* @author: Gaurav
+* Team: G10
+* Gaurav Ketkar
+* Madhuri Abnave
+* Vijay Mungara
+* Malav Shah
+*/
 
 class PerCom {
 	static boolean[] combiArr;
@@ -111,7 +119,7 @@ class PerCom {
 	}
 
 	/*
-	 * Visit every 'True' element of permu and print it.
+	 * Visit every of permu and do whatever you want..
 	 */
 	public static void visit(int[] permu) {
 		int size = permu.length;
@@ -123,7 +131,7 @@ class PerCom {
 	}
 
 	/*
-	 * Visits all 'True' elements of combiArr and prints them out.
+	 * Visits all 'True' elements of combiArr and do whatever you want.
 	 */
 	public static void visit() {
 		int size = combiArr.length;
@@ -135,5 +143,4 @@ class PerCom {
 			}
 		}
 	}
-
 }
