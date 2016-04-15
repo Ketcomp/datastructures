@@ -1,15 +1,16 @@
-import java.math.BigDecimal;
-import java.util.Arrays;
+
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.NavigableMap;
-import java.util.NavigableSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class MDS {
+	public enum updateOrInsert {
+		update, insert;
+	}
 
 	class PriceCompare implements Comparator<Item> {
 		public int compare(Item item1, Item item2) {
@@ -17,12 +18,14 @@ public class MDS {
 				return -1;
 			else
 				return 1;
+			else
+				return 0;
 		}
 	}
 
 	TreeMap<Long, Item> primary = new TreeMap<Long, Item>();
 	TreeMap<Long, TreeSet<Item>> secondary = new TreeMap<Long, TreeSet<Item>>();
-	TreeSet<Item> range; 
+	TreeSet<Item> range = new TreeSet<Item>();
 	HashMap<StringBuilder, Integer> same = new HashMap<StringBuilder, Integer>();
 
 	/*
@@ -35,52 +38,15 @@ public class MDS {
 		Item newThing = new Item(id, price, description, size);
 
 		// Does the item already exist?
-		if (primary.get(id) != null) 
-		{
-			toReturn=0;
-			delete(id);
+		if (primary.get(id) != null) {
+			toReturn = 0;
 		}
-		
-		// Inserting to primary data structure
-		primary.put(id,  newThing);
-		PriceCompare pc= new PriceCompare();
-		
-		// Inserting to secondary data structure
-		for(int i=0;i<size;i++)
-		{
-			if(secondary.get(description[i])==null)
-			{
-				TreeSet<Item> newSet= new TreeSet<Item>(pc);
-				newSet.add(newThing);
-				secondary.put(description[i], newSet);
-			}
-			else
-			{
-				secondary.get(description[i]).add(newThing);
-			}
-		}
-		
-		// Adding to range data structure
-		if(range== null)
-			range = new TreeSet<Item>(pc);
-		range.add(newThing);
-		
-		// Adding to same data structure
-		if(size>=8)
-		{
-			Arrays.sort(description);
-			StringBuilder key= new StringBuilder();
-			for(int i=0;i<size;i++)
-				key= key.append(description[i]);
-			if(same.get(key)==null)
-				same.put(key, 1);
-			else
-			{
-				int count= same.get(key);
-				count++;
-				same.put(key, count);
-			}
-		}
+
+		inPrimary(newThing, id, price, description, size, toReturn);
+		inSecondary(newThing, id, price, description, size, toReturn);
+		inRange(newThing, id, price, description, size, toReturn);
+		inSame(newThing, id, price, description, size, toReturn);
+
 		return toReturn;
 	}
 
@@ -98,38 +64,17 @@ public class MDS {
 	/*
 	 * Delete Item from all of our datastructures.
 	 */
-	long delete(long id) 
-	{
-		long toReturn=0;
-		if(primary.containsKey(id))
-		{
-			Item toRemove= primary.remove(id);
-			for(int i=0;i<toRemove.length;i++)
-				toReturn= toReturn + toRemove.description[i];
-			for(int i=0;i<toRemove.length;i++)
-			{
-				TreeSet<Item> removeFromSet= secondary.get(toRemove.description[i]);
-				removeFromSet.remove(toRemove);
-			}
-			
-			range.remove(toRemove);
-			if(toRemove.length>=8)
-			{
-				Arrays.sort(toRemove.description);
-				StringBuilder key= new StringBuilder();
-				for(int i=0;i<toRemove.length;i++)
-					key= key.append(toRemove.description[i]);
-				if(same.get(key)==1)
-					same.remove(key);
-				else
-				{
-					int count= same.get(key);
-					count--;
-					same.put(key, count);
-				}
-			}
+	long delete(long id) {
+		long[] description = primary.get(id).description;
+		Item itemToDelete = primary.get(id);
+		// Remove from primary
+		primary.remove(id);
+		// Remove from the secondary
+		for (int i = 0; i < description.length; i++) {
+			TreeSet<Item> removeFromThis = secondary.get(description[i]);
+			removeFromThis.remove(itemToDelete);
 		}
-		return toReturn;
+		return 0;
 	}
 
 	double findMinPrice(long des) {
@@ -155,32 +100,14 @@ public class MDS {
 		return count;
 	}
 
-	double priceHike(long minid, long maxid, double rate) 
-	{
-		NavigableMap<Long, Item>  subMap= new TreeMap<Long, Item>();
-		subMap= primary.subMap(minid, true, maxid, true);
-		double total_increase=0, increment=0;
-		Double d;
-		Iterator iter= subMap.entrySet().iterator();
-		Map.Entry<Long, Item> pair;
-		while(iter.hasNext())
-		{
-			pair= (Map.Entry<Long, Item>)iter.next();
-			increment= pair.getValue().price * (rate/100);
-			d= increment;
-			increment= new BigDecimal(d).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
-			total_increase= total_increase+ increment;
-			pair.getValue().price += increment; 
-		}
-
-		return total_increase;
+	double priceHike(long minid, long maxid, double rate) {
+		return 0;
 	}
 
 	int range(double lowPrice, double highPrice) {
 		Item item1 = new Item(lowPrice);
 		Item item2 = new Item(highPrice);
-		NavigableSet<Item> subset = new TreeSet<Item>(); 
-		subset = range.subSet(item1, true, item2, true);
+		TreeSet<Item> subset = (TreeSet<Item>) range.subSet(item1, true, item2, true);
 		return subset.size();
 	}
 
@@ -194,5 +121,48 @@ public class MDS {
 				count = count + (Integer) pair.getValue();
 		}
 		return count;
+	}
+
+	/*
+	 * Insertion functions for each of the 4 data structures.
+	 */
+	void inPrimary(Item newThing, long id, double price, long[] description, int size, int toReturn) {
+		// Item already exists. Update fields.
+		if (toReturn == 0) {
+			// Update it in primary.
+			Item alreadyThere = primary.get(id);
+			alreadyThere.price = price;
+			if (description.length != 0) {
+				alreadyThere.description = description;
+			}
+		}
+		// Item doesn't exist, it is new.
+		else {
+			// Insert into primary datastructure.
+			primary.put(id, newThing);
+		}
+	}
+
+	void inSecondary(Item newThing, long id, double price, long[] description, int size, int toReturn) {
+		if (0 == toReturn) {
+			// Update it in secondary.
+			for (int i = 0; i < size; i++) {
+				// Price
+				secondary.get(description[i])you
+			}
+		} else {
+			// Insert into secondary datastructure.
+			for (int i = 0; i < size; i++) {
+				// Find out if there is already a TreeSet for that description
+				if (null == secondary.get(description[i])) {
+					PriceCompare pc = new PriceCompare();
+					TreeSet<Item> newSet = new TreeSet<Item>(pc);
+					newSet.add(newThing);
+					secondary.put(description[i], newSet);
+				} else { // The tree set already exists.
+					secondary.get(description[i]).add(newThing);
+				}
+			}
+		}
 	}
 }
